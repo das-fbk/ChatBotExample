@@ -1412,23 +1412,12 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 			String text) throws TelegramApiException {
 		SendMessage sendMessage = new SendMessage().setChatId(
 				message.getChatId().toString()).enableMarkdown(true);
-		if (this.getProximity() != null) {
-			String textNew = "";
-			if (this.getProximity().equals("globale")) {
-				textNew = text.concat(" con il servizio Rome2Rio");
-			} else {
-				textNew = text.concat(" con il servizio Viaggia Trento");
-			}
-			sendMessage.setText(textNew);
-			sendMessage.setReplyMarkup(keyboard);
-			sendMessage(sendMessage);
-
-		} else {
+		
 			sendMessage.setText(text);
 			sendMessage.setReplyMarkup(keyboard);
 			sendMessage(sendMessage);
 
-		}
+		
 
 	}
 

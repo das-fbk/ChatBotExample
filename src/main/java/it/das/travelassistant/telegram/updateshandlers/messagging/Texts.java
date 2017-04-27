@@ -124,45 +124,73 @@ public class Texts {
     }
     public static String  textRome2RioResult(Language language, ArrayList <Travel> travels, String choose) {
     	String result = getMessage("rome2riodifferentway", language.locale())+"\n";
+    	int rest = 0;
+		int hour = 0;
+		String durationString = "";
     	switch(choose) {
 	    	case TIME:
 		    		for(int i = 0;i<travels.size();i++) {
+		    			Float help = Float.parseFloat(travels.get(i).getDuration());
+		    			rest = help.intValue() % 60;
+		    			hour = help.intValue() / 60;
+		    			durationString = hour+"."+rest+" h";
 		        		result += travels.get(i).getMean()+"\n"+
-		        					"        "+travels.get(i).getDuration()+
-		        					"    "+travels.get(i).getCost()+
+		        					"        "+travels.get(i).getCost() +
+		        					"    "+"*"+durationString+"*"+
 		        					"    "+travels.get(i).getDistance()+
 		        					"    "+travels.get(i).getNumber_changes()+"\n\n";
 		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     PRICE"+PRICE+"        *TIME*"+TIME+"        DISTANCE"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
 	    		break;
 	    	case CHANGES:
 		    		for(int i = 0;i<travels.size();i++) {
+		    			Float help = Float.parseFloat(travels.get(i).getDuration());
+		    			rest = help.intValue() % 60;
+		    			hour = help.intValue() / 60;
+		    			durationString = hour+"."+rest+" h";
 		        		result += travels.get(i).getMean()+"\n"+
-		        					"        "+travels.get(i).getNumber_changes()+
-		        					"    "+travels.get(i).getDuration()+
+		        					"        "+travels.get(i).getCost() +
+		        					"    "+durationString+
 		        					"    "+travels.get(i).getDistance()+
-		        					"    "+travels.get(i).getCost() +"\n\n";
+		        					"    "+"*"+travels.get(i).getNumber_changes()+"*"+"\n\n";
 		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     PRICE"+PRICE+"        TIME"+TIME+"        DISTANCE"+DISTANCE+"        *CHANGES*"+CHANGES+"\n\n";
 	    		break;
 	    	case DISTANCE:
 		    		for(int i = 0;i<travels.size();i++) {
+		    			Float help = Float.parseFloat(travels.get(i).getDuration());
+		    			rest = help.intValue() % 60;
+		    			hour = help.intValue() / 60;
+		    			durationString = hour+"."+rest+" h";
 		        		result += travels.get(i).getMean()+"\n"+
-		        					"        "+travels.get(i).getDistance()+
-		        					"    "+travels.get(i).getDuration()+
-		        					"    "+travels.get(i).getCost()+
+		        					"        "+travels.get(i).getCost() +
+		        					"    "+durationString+
+		        					"    "+"*"+travels.get(i).getDistance()+"*"+
 		        					"    "+travels.get(i).getNumber_changes()+"\n\n";
 		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     PRICE"+PRICE+"        TIME"+TIME+"        *DISTANCE*"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
 	    		break;
 	    	default:
 		    		for(int i = 0;i<travels.size();i++) {
+		    			Float help = Float.parseFloat(travels.get(i).getDuration());
+		    			rest = help.intValue() % 60;
+		    			hour = help.intValue() / 60;
+		    			durationString = hour+"."+rest+" h";
 		        		result += travels.get(i).getMean()+"\n"+
-		        					"        "+travels.get(i).getCost() +
-		        					"    "+travels.get(i).getDuration()+
+		        					"        "+"*"+travels.get(i).getCost() +"*"+
+		        					"    "+durationString+
 		        					"    "+travels.get(i).getDistance()+
 		        					"    "+travels.get(i).getNumber_changes()+"\n\n";
 		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     *PRICE*"+PRICE+"        TIME"+TIME+"        DISTANCE"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
 	    		break;
     	}
     	
+    		
     		result+=getMessage("rome2rioresult", language.locale());
     	return result;
     }

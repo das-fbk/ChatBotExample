@@ -20,10 +20,10 @@ public class Commands {
 
     
     // filter commands
-    public static final String PRICE = "\u2193"+"\ud83d\udcb5";
-    public static final String TIME = "\u2193"+"\u23f3";
-    public static final String CHANGES = "\u2193"+"\u0058";
-    public static final String DISTANCE = "\u2193"+"\u33ce";
+    public static final String PRICE = "\ud83d\udcb5";
+    public static final String TIME = "\u23f3";
+    public static final String CHANGES = "\u0058";
+    public static final String DISTANCE = "\u33ce";
 
     // endregion commands
 

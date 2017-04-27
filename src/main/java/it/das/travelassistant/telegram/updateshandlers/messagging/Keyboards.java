@@ -174,19 +174,6 @@ public class Keyboards {
 			Double distance = alternatives.get(i).getDistance();
 			Integer numberChanges = alternatives.get(i).getNumber_changes();
 			
-			String durationString = "";
-			if(duration < 60) {
-				if(duration == 1) {
-					durationString = duration.toString() + " min";
-				}else {
-					durationString = duration.toString() + " mins";
-				}
-			}else{
-				int rest = duration.intValue() % 60;
-				int hour = duration.intValue() / 60;
-				durationString = hour+"."+rest+" h";
-			}
-			
 			String distanceString = distance.toString() + " Km";
 			String costString = cost.toString() + " \u20ac";
 			String shangesString = numberChanges.toString();
@@ -198,7 +185,7 @@ public class Keyboards {
 			
 			mean = setKeyboardJourneyOption(mean);
 			
-			travels.add(new Travel(mean, durationString, costString, distanceString, shangesString));
+			travels.add(new Travel(mean, duration.toString(), costString, distanceString, shangesString));
 			
 		}
 
