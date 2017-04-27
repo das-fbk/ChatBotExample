@@ -85,14 +85,6 @@ public class Keyboards {
 	private static ReplyKeyboardMarkup keyboardFrom(long chatId,
 			List<String> zone, Menu menu) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
-		List<KeyboardRow> keyboard = new ArrayList<>();
-
-		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x94,
-				(byte) 0x99 };
-		String backEmoticon = new String(emojiBytes, Charset.forName("UTF-8"));
-
-		keyboard.add(keyboardRowButton(backEmoticon));
-		replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, menu);
 		return replyKeyboardMarkup;
@@ -101,15 +93,6 @@ public class Keyboards {
 	private static ReplyKeyboardMarkup keyboardTo(long chatId,
 			List<String> zone, Menu menu) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
-		List<KeyboardRow> keyboard = new ArrayList<>();
-
-		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x94,
-				(byte) 0x99 };
-		String backEmoticon = new String(emojiBytes, Charset.forName("UTF-8"));
-
-		keyboard.add(keyboardRowButton(backEmoticon));
-
-		replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, menu);
 		return replyKeyboardMarkup;
@@ -186,10 +169,10 @@ public class Keyboards {
         
 		for (int i = 0; i < alternatives.size(); i++) {
 			String mean = alternatives.get(i).getMean();
-			Long duration = alternatives.get(i).getDuration();
-			Long cost = alternatives.get(i).getPrice();
-			Long distance = alternatives.get(i).getDistance();
-			Integer numberChanges = alternatives.get(i).getNumber_changes()-1;
+			Double duration = alternatives.get(i).getDuration();
+			Double cost = alternatives.get(i).getPrice();
+			Double distance = alternatives.get(i).getDistance();
+			Integer numberChanges = alternatives.get(i).getNumber_changes();
 			
 			String durationString = "";
 			if(duration < 60) {
@@ -198,7 +181,7 @@ public class Keyboards {
 				}else {
 					durationString = duration.toString() + " mins";
 				}
-			}else {
+			}else{
 				int rest = duration.intValue() % 60;
 				int hour = duration.intValue() / 60;
 				durationString = hour+"."+rest+" h";
@@ -253,9 +236,9 @@ public class Keyboards {
 
 		for (int i = 0; i < alternatives.size(); i++) {
 			String mean = alternatives.get(i).getMean();
-			Long duration = alternatives.get(i).getDuration();
-			Long cost = alternatives.get(i).getPrice();
-			Long distance = alternatives.get(i).getDistance();
+			Double duration = alternatives.get(i).getDuration();
+			Double cost = alternatives.get(i).getPrice();
+			Double distance = alternatives.get(i).getDistance();
 			String durationString = duration.toString() + " min";
 			String distanceString = distance.toString() + " Km";
 			String costString = cost.toString() + " \u20ac";
@@ -365,7 +348,7 @@ public class Keyboards {
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, Menu.START);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 
 	public static ReplyKeyboardMarkup keyboardLanguage(long chatId) {
@@ -447,11 +430,7 @@ public class Keyboards {
 
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
-		byte[] emojiBytes = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x94,
-				(byte) 0x99 };
-		String backEmoticon = new String(emojiBytes, Charset.forName("UTF-8"));
-
-		keyboard.add(keyboardRowButton(backEmoticon));
+	
 		Current.setMenu(chatId, Menu.CALCOLA);
 		return replyKeyboardMarkup;
 	}
@@ -653,118 +632,73 @@ public class Keyboards {
 	
 	public static String setKeyboardJourneyOption(String mean) {
 		
-		if(mean.contains("Night train")) {
-			mean = Pattern.compile("Night train", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Night_trai"));
+		mean = Pattern.compile("Night train", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Night_trai"));
+		
+		mean = Pattern.compile("night train", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("night_trai"));
+		
+		mean = Pattern.compile("Night bus", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Night_bu"));
+		
+		mean = Pattern.compile("night bus", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("night_bu"));
+		
+		mean = Pattern.compile("Car ferry", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Car_ferr"));
+		
+		mean = Pattern.compile("car ferry", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("car_ferr"));
+		
+		if(mean.contains("Line")) {
+			mean = Pattern.compile(mean.substring(0, mean.indexOf("train")), Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Train"));
 		}
-		if(mean.contains("night train")) {
-			mean = Pattern.compile("night train", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("night_trai"));
-		}
-		if(mean.contains("Night bus")) {
-			mean = Pattern.compile("Night bus", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Night_bu"));
-		}
-		if(mean.contains("night bus")) {
-			mean = Pattern.compile("night bus", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("night_bu"));
-		}
-		if(mean.contains("Car ferry")) {
-			mean = Pattern.compile("Car ferry", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Car_ferr"));
-		}
-		if(mean.contains("car ferry")) {
-			mean = Pattern.compile("car ferry", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("car_ferr"));
+		
+		if(mean.contains("line")) {
+			mean = Pattern.compile(mean.substring(0, mean.indexOf("train")), Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("train"));
 		}
 		
 		
+		mean = Pattern.compile(", train to", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement(" to"));
 		
-		if(mean.contains(", train to")) {
-			mean = Pattern.compile(", train to", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement(" to"));
-		}
+		mean = Pattern.compile("Train", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE84" + "Train"));
 		
-		if(mean.contains("Train")) {
-			mean = Pattern.compile("Train", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE84" + "Train"));
-		}
+		mean = Pattern.compile("train", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE84" + "train"));
 		
-		if(mean.contains("train")) {
-			mean = Pattern.compile("train", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE84" + "train"));
-		}
+		mean = Pattern.compile("Night_trai", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE86" + "Night train"));
 		
-		if(mean.contains("Night_trai") ) {
-			mean = Pattern.compile("Night_trai", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE86" + "Night train"));
-		}
+		mean = Pattern.compile("night_trai", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE86" + "night train"));
 		
-		if(mean.contains("night_trai")) {
-			mean = Pattern.compile("night_trai", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE86" + "night train"));
-		}
+		mean = Pattern.compile("Bus", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE8C" + "Bus"));
 		
-		if(mean.contains("Bus")) {
-			mean = Pattern.compile("Bus", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE8C" + "Bus"));
-		}
+		mean = Pattern.compile("bus", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE8C" + "bus"));
 		
-		if( mean.contains("bus")) {
-			mean = Pattern.compile("bus", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE8C" + "bus"));
-		}
+		mean = Pattern.compile("Night_bu", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\ud83d\ude8d" + "Night bus"));
 		
-		if(mean.contains("Night_bu")) {
-			mean = Pattern.compile("Night_bu", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\ud83d\ude8d" + "Night bus"));
-		}
+		mean = Pattern.compile("night_bu", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\ud83d\ude8d" + "night bus"));
 		
-		if(mean.contains("night_bu")) {
-			mean = Pattern.compile("night_bu", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\ud83d\ude8d" + "night bus"));
-		}
+		mean = Pattern.compile("Drive", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE98" + "Drive"));
 		
-		if(mean.contains("Drive")) {
-			mean = Pattern.compile("Drive", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE98" + "Drive"));
-		}
+		mean = Pattern.compile("drive", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE98" + "drive"));
 		
-		if(mean.contains("drive")) {
-			mean = Pattern.compile("drive", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE98" + "drive"));
-		}
+		mean = Pattern.compile("Car_ferr", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\u26F4" + "Car ferry"));
 		
-		if(mean.contains("Car_ferr")) {
-			mean = Pattern.compile("Car_ferr", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\u26F4" + "Car ferry"));
-		}
+		mean = Pattern.compile("car_ferr", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\u26F4" + "car ferry"));
 		
-		if(mean.contains("car_ferr")) {
-			mean = Pattern.compile("car_ferr", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\u26F4" + "car ferry"));
-		}
+		mean = Pattern.compile("Fly", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDEEB" + "Fly"));
 		
-		if(mean.contains("Fly")) {
-			mean = Pattern.compile("Fly", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDEEB" + "Fly"));
-		}
+		mean = Pattern.compile("fly", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDEEB" + "fly"));
 		
-		if(mean.contains("fly")) {
-			mean = Pattern.compile("fly", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDEEB" + "fly"));
-		}
+		mean = Pattern.compile("Shuttle", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE90" + "Shuttle"));
 		
-		if(mean.contains("Shuttle")) {
-			mean = Pattern.compile("Shuttle", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE90" + "Shuttle"));
-		}
+		mean = Pattern.compile("shuttle", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE90" + "shuttle"));
 		
-		if(mean.contains("shuttle")) {
-			mean = Pattern.compile("shuttle", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE90" + "shuttle"));
-		}
+		mean = Pattern.compile("Rideshare", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83C\uDFCE" + "Rideshare"));
 		
-		if(mean.contains("Rideshare")) {
-			mean = Pattern.compile("Rideshare", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83C\uDFCE" + "Rideshare"));
-		}
+		mean = Pattern.compile("rideshare", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83C\uDFCE" + "rideshare"));
 		
-		if(mean.contains("rideshare")) {
-			mean = Pattern.compile("rideshare", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83C\uDFCE" + "rideshare"));
-		}
+		mean = Pattern.compile("Eurotunnel", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDD73" + "Eurotunnel"));
 		
-		if(mean.contains("Eurotunnel")) {
-			mean = Pattern.compile("Eurotunnel", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDD73" + "Eurotunnel"));
-		}
+		mean = Pattern.compile("eurotunnel", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDD73" + "eurotunnel"));
 		
-		if(mean.contains("eurotunnel")) {
-			mean = Pattern.compile("eurotunnel", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDD73" + "eurotunnel"));
-		}
+		mean = Pattern.compile("Taxi", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\ud83d\ude95" + "Taxi"));
 		
-		if(mean.contains("Taxi")) {
-			mean = Pattern.compile("Taxi", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\ud83d\ude95" + "Taxi"));
-		}
+		mean = Pattern.compile("taxi", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\ud83d\ude95" + "taxi"));
 		
-		if(mean.contains("taxi")) {
-			mean = Pattern.compile("taxi", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\ud83d\ude95" + "taxi"));
-		}
 		
 		
 		return mean;

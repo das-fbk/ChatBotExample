@@ -546,8 +546,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 
 					String from1 = this.getStart();
 					String to1 = this.getDestination();
-					alternatives1 = rome2RioWrapper.getRome2RioAlternatives(
-							from1, to1);
+					alternatives1 = rome2RioWrapper.getRome2RioAlternatives(from1, to1);
 
 					if (alternatives1.size() != 0) {
 						// visualizzo le alternative come bottoni

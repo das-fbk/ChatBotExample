@@ -4,7 +4,7 @@ public class TripAlternative {
 	
 	
 
-	public TripAlternative(String mean, Long price, Long duration, Long distance, Integer number_changes) {
+	public TripAlternative(String mean, Double price, Double duration, Double distance, Integer number_changes) {
 		super();
 		this.mean = mean;
 		this.price = price;
@@ -13,9 +13,9 @@ public class TripAlternative {
 		this.number_changes = number_changes;
 	}
 	private String mean;
-	private Long price;
-	private Long duration;
-	private Long distance;
+	private Double price;
+	private Double duration;
+	private Double distance;
 	private Integer number_changes;
 	
 	public Integer getNumber_changes() {
@@ -30,22 +30,22 @@ public class TripAlternative {
 	public void setMean(String mean) {
 		this.mean = mean;
 	}
-	public Long getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(Long price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public Long getDuration() {
+	public Double getDuration() {
 		return duration;
 	}
-	public void setDuration(Long duration) {
+	public void setDuration(Double duration) {
 		this.duration = duration;
 	}
-	public Long getDistance() {
+	public Double getDistance() {
 		return distance;
 	}
-	public void setDistance(Long distance) {
+	public void setDistance(Double distance) {
 		this.distance = distance;
 	}
 }

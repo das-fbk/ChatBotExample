@@ -40,7 +40,7 @@ public class Rome2RioAPIWrapper {
 				//changes 
 				JSONArray changes =  new JSONArray();
 				changes = route.getJSONArray("segments");
-				int number_changes = 0;
+				int number_changes = -1;
 				for(int j = 0;j < changes.length();j++) {
 					number_changes++;
 				}
@@ -51,17 +51,16 @@ public class Rome2RioAPIWrapper {
 				JSONObject price = (JSONObject) prices.get(0);
 				
 				//price
-				Long priceInd = price.getLong("price");
-				
-				
+				Double priceInd = price.getDouble("price");
 				
 				//distance
-				Long distance = route.getLong("distance");
+				Double distance = route.getDouble("distance");
 				
 				//duration
-				Long duration = route.getLong("totalDuration");
+				Double duration = route.getDouble("totalDuration");
 				
-				TripAlternative alternative = new TripAlternative(mean,priceInd,distance,duration, number_changes);
+				
+				TripAlternative alternative = new TripAlternative(mean, priceInd, duration, distance, number_changes);
 				alternatives.add(alternative);
 			
 			}
