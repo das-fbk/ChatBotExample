@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.logging.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -25,7 +24,6 @@ static InputStream is = null;
 static JSONObject jObj = null;
 static String json = "";
 
-// constructor
 public void JSONParser() {
 
 }

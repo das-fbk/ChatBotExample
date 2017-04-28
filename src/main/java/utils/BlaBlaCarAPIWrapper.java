@@ -5,44 +5,112 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class BlaBlaCarAPIWrapper {
 
-	public JSONObject getBlaBlaAlternatives(String partenza, String destinazione)
-			throws IOException {
+	public ArrayList<TripAlternativeBlaBlaCar> getBlaBlaCarAlternatives(String partenza, String destinazione) {
+		
+		 ArrayList<TripAlternativeBlaBlaCar> alternatives = new ArrayList<TripAlternativeBlaBlaCar>();
+		 
+		 String result = callURL("https://public-api.blablacar.com/api/v2/trips?key=0954ba4c89b34ab7b73a2d727e91d7ff&fn="+partenza+"&tn="+destinazione+"&cur=EUR&_format=json");
+		 
+		if(result.equalsIgnoreCase("erroreAPI")){
+			 return alternatives;
+		}else{
+		 
+			JSONObject jsonObj = new JSONObject(result);
+			JSONArray trips =  new JSONArray();
+			trips = jsonObj.getJSONArray("trips");
+		
+			Integer distance = jsonObj.getInt("distance");
+			Integer perfect_duration = jsonObj.getInt("duration");
+			Double recommended_price = jsonObj.getDouble("recommended_price");
+			
+			for(int i = 0;i < trips.length(); i++){
+				
+				JSONObject route = (JSONObject) trips.get(i);
+				
+				Integer seats_left = route.getInt("seats_left");
+				
+				String date =route.getString("departure_date").substring(0, 10);
+				String hour =route.getString("departure_date").substring(11, 19);
+				
+				Double priceInd;
+				if(route.has("price_with_commission")) {
+					JSONObject price = route.getJSONObject("price_with_commission");
+					priceInd = price.getDouble("value");
+				}else {
+					priceInd = 0.0;
+				}
+				
 
-		String stringUrl = "https://public-api.blablacar.com/api/v2/"
-				+ "trips?fn=" + partenza + "&tn=" + destinazione;
+				String carmodel;
+				if(route.has("car")) {
+					JSONObject car = route.getJSONObject("car");
+					carmodel = car.getString("model");
+				}else {
+					carmodel = "null";
+				}
+				
+				
+				Integer duration;
+				if(route.has("duration")) {
+					JSONObject totalduration = route.getJSONObject("duration");
+					duration = totalduration.getInt("value");
+				}else {
+					duration = 0;
+				}
+				
 
-		URL myURL = new URL(stringUrl);
-		HttpURLConnection myURLConnection = (HttpURLConnection) myURL
-				.openConnection();
-
-		myURLConnection.setRequestMethod("GET");
-		myURLConnection.setRequestProperty("accept", "application/json");
-		myURLConnection.setRequestProperty("key",
-				"78d56d3b77604b3daa428ab370cb9b41");
-
-		myURLConnection.setRequestProperty("X-Requested-With", "Curl");
-
-		InputStreamReader inputStreamReader = new InputStreamReader(
-				myURLConnection.getInputStream());
-		// read this input
-		BufferedReader bR = new BufferedReader(inputStreamReader);
-		String line = "";
-
-		StringBuilder responseStrBuilder = new StringBuilder();
-		while ((line = bR.readLine()) != null) {
-
-			responseStrBuilder.append(line);
+				if(seats_left > 0) {
+					TripAlternativeBlaBlaCar alternative = new TripAlternativeBlaBlaCar(priceInd, seats_left, date, hour, duration, carmodel, distance, perfect_duration, recommended_price);
+					alternatives.add(alternative);
+				}
+			
+			}
 		}
-
-		JSONObject result = new JSONObject(responseStrBuilder.toString());
-		 System.out.println(result);
-		return result;
-
+		 return alternatives;
 	}
+	
+		public static String callURL(String myURL) {
+			System.out.println(myURL);
+				StringBuilder sb = new StringBuilder();
+				URLConnection urlConn = null;
+				InputStreamReader in = null;
+				try {
+					URL url = new URL(myURL);
+					urlConn = url.openConnection();
+					if (urlConn != null)
+						urlConn.setReadTimeout(60 * 1000);
+					if (urlConn != null && urlConn.getInputStream() != null) {
+						in = new InputStreamReader(urlConn.getInputStream(),
+								Charset.defaultCharset());
+						BufferedReader bufferedReader = new BufferedReader(in);
+						if (bufferedReader != null) {
+							int cp;
+							while ((cp = bufferedReader.read()) != -1) {
+								sb.append((char) cp);
+							}
+							bufferedReader.close();
+						}
+					}
+				in.close();
+				} catch (Exception e) {
+					//throw {new RuntimeException("Exception while calling URL:"+ myURL, e);
+					return "erroreAPI";
+					
+				} 
+		 
+				return sb.toString();
+			}
 
 }

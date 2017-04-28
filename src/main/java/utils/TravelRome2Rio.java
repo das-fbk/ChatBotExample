@@ -1,17 +1,17 @@
-package it.das.travelassistant.telegram.updateshandlers.messagging;
+package utils;
 
 import java.util.Comparator;
 
 import com.google.common.base.CharMatcher;
 
-public class Travel {
+public class TravelRome2Rio {
 	private String mean;
 	private String duration;
 	private String cost;
 	private String distance;
 	private String number_changes;
 	
-	public Travel(String mean, String duration, String cost, String distance, String number_changes) {
+	public TravelRome2Rio(String mean, String duration, String cost, String distance, String number_changes) {
         this.mean = mean;
         this.duration = duration;
         this.cost = cost;
@@ -61,9 +61,9 @@ public class Travel {
 	}
 
 
-	public static Comparator <Travel> priceComparator = new Comparator<Travel>() {
+	public static Comparator <TravelRome2Rio> priceComparator = new Comparator<TravelRome2Rio>() {
 
-        public int compare(Travel t1, Travel t2) {
+        public int compare(TravelRome2Rio t1, TravelRome2Rio t2) {
         	
             int travel1 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t1.getCost()));
             int travle2 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t2.getCost()));
@@ -72,9 +72,9 @@ public class Travel {
         }
     };
     
-    public static Comparator <Travel> timeComparator = new Comparator<Travel>() {
+    public static Comparator <TravelRome2Rio> timeComparator = new Comparator<TravelRome2Rio>() {
 
-        public int compare(Travel t1, Travel t2) {
+        public int compare(TravelRome2Rio t1, TravelRome2Rio t2) {
         	
             int travel1 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t1.getDuration()));
             int travle2 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t2.getDuration()));
@@ -83,9 +83,9 @@ public class Travel {
         }
     };
     
-    public static Comparator <Travel> distanceComparator = new Comparator<Travel>() {
+    public static Comparator <TravelRome2Rio> distanceComparator = new Comparator<TravelRome2Rio>() {
 
-        public int compare(Travel t1, Travel t2) {
+        public int compare(TravelRome2Rio t1, TravelRome2Rio t2) {
         	
             int travel1 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t1.getDistance()));
             int travle2 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t2.getDistance()));
@@ -94,9 +94,9 @@ public class Travel {
         }
     };
     
-    public static Comparator <Travel> changesComparator = new Comparator<Travel>() {
+    public static Comparator <TravelRome2Rio> changesComparator = new Comparator<TravelRome2Rio>() {
 
-        public int compare(Travel t1, Travel t2) {
+        public int compare(TravelRome2Rio t1, TravelRome2Rio t2) {
         	
             int travel1 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t1.getNumber_changes().toString()));
             int travle2 = Integer.parseInt(CharMatcher.DIGIT.retainFrom(t2.getNumber_changes().toString()));

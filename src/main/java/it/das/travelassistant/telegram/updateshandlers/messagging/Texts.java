@@ -1,14 +1,12 @@
 package it.das.travelassistant.telegram.updateshandlers.messagging;
 
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.AUTOBUSCOMMAND;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKESHARINGSCOMMAND;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PARKINGSCOMMAND;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TRAINSCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import it.sayservice.platform.smartplanner.data.message.otpbeans.Parking;
+import utils.TravelRome2Rio;
+import utils.TravelBlaBlaCar;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -57,13 +55,6 @@ public class Texts {
         return text;
     }
 
-    // endregion utilities
-
-    // region commands
-
-    public static String textLanguage(Language language) {
-    	return getMessage("changelang", language.locale());
-    }
 
     public static String textStart(Language language) {
     	return getMessage("welcome", language.locale());
@@ -81,8 +72,9 @@ public class Texts {
         return textStart(language);
     }
 
-    public static String textStartMain(Language language) {
-    	return getMessage("startmain", language.locale());
+    
+    public static String textCalculateTrip(Language language) {
+    	return getMessage("calculateTrip", language.locale());
     }
 
     public static String textStartTaxi(List<TaxiContact> taxi) {
@@ -113,16 +105,17 @@ public class Texts {
     public static String textStartParkings(Language language) {
     	return getMessage("startparking", language.locale());
     }
-    public static String textStartRome2Rio(Language language) {
-    	return getMessage("startrome2rio", language.locale());
+    public static String textStartFrom(Language language) {
+    	return getMessage("startFrom", language.locale());
     }
-    public static String  textStartRome2RioDestination(Language language) {
-    	return getMessage("startrome2rioDestination", language.locale());
+    public static String  textStartDestination(Language language) {
+    	return getMessage("startDestination", language.locale());
     }
-    public static String  textRome2RioCalcola(Language language) {
-    	return getMessage("startrome2rioCacola", language.locale());
+    public static String  textChooseRomeBla(Language language) {
+    	return getMessage("chooseBlablacarRometoRio", language.locale());
     }
-    public static String  textRome2RioResult(Language language, ArrayList <Travel> travels, String choose) {
+    
+    public static String  textRome2RioResult(Language language, ArrayList <TravelRome2Rio> travels, String choose) {
     	String result = getMessage("rome2riodifferentway", language.locale())+"\n";
     	int rest = 0;
 		int hour = 0;
@@ -194,21 +187,23 @@ public class Texts {
     		result+=getMessage("rome2rioresult", language.locale());
     	return result;
     }
+    
+    
+    public static String  textBlaBlaCarResult(Language language, ArrayList <TravelBlaBlaCar> travels, String choose) {
+    	String result = "";
+    	
+    	return result;
+    }
+    
     public static String  textViaggiaTrentoResult(Language language) {
     	return getMessage("viaggiatrentoresult", language.locale());
     }
-    public static String  textViaggiaTrentoCalcola(Language language) {
-    	return getMessage("viaggiaTrentoCalcola", language.locale());
-    }
+
+    
     public static String  textViaggiaTimeDeparture(Language language) {
     	return getMessage("viaggiatimedeparture", language.locale());
     }
-    public static String  textTransportType(Language language) {
-    	return getMessage("viaggiatransporttype", language.locale());
-    }
-    
-    
-    
+
     
    
 
@@ -216,66 +211,17 @@ public class Texts {
     	return getMessage("startbikesharing", language.locale());
     }
 
-    // endregion Menu.START
-
-    // region Menu.LANGUAGE
-
-    public static String textLanguageChange(Language language) {
-    	return getMessage("langchanged", language.locale());
-    }
-
-    // endregion Menu.LANGUAGE
-
-    // region Menu.AUTOBUS
-
-    public static String textAutobusHelp(Language language) {
-    	return getMessage("bushelp", language.locale());
-    }
-
-    public static String textAutobus(String autobusId, TimeTable timeTable, int index) {
-        return "*" + AUTOBUSCOMMAND + " " + autobusId + "*\n" + textTimetable(timeTable, index);
-    }
-
-    // endregion Menu.AUTOBUS
-
-    // region Menu.TRAINS
-
-    public static String textTrainHelp(Language language) {
-    	return getMessage("trainhelp", language.locale());
-    }
-
-    public static String textTrain(String trainId, TimeTable timeTable, int index) {
-        return "*" + TRAINSCOMMAND + " " + trainId + "*\n" + textTimetable(timeTable, index);
-    }
 
 
-    // endregion Menu.TRAINS
 
-    // region Menu.PARKINGS
 
-    public static String textParkingsHelp(Language language) {
-    	return getMessage("parkinghelp", language.locale());
-    }
 
-    public static String textParking(Parking parking, Language language) {
-        return "*PARKING " + parking.getName() + "*\n" + parking.getDescription() + "\n" + textSlots(parking, language);
-    }
+
 
     public static String textParkingsNear(List<Parking> parkings, Language language) {
         return textNear(parkings, "nonearparking", language);
     }
 
-    // endregion Menu.PARKINGS
-
-    // region Menu.BIKESHARINGS
-
-    public static String textBikeSharingsHelp(Language language) {
-    	return getMessage("bikesharinghelp", language.locale());
-    }
-
-    public static String textBikeSharings(Parking parking, Language language) {
-        return "*Bike sharing " + parking.getName() + "*\n" + parking.getDescription() + "\n" + bikeSlots(parking, language);
-    }
 
 	private static String bikeSlots(Parking parking, Language language) {
     	return getMessage("bikeslots", language.locale(), ""+parking.getSlotsAvailable(), ""+parking.getExtra().get("bikes"));

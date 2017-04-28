@@ -14,9 +14,9 @@ import org.json.JSONObject;
 public class Rome2RioAPIWrapper {
 
 
-	public ArrayList<TripAlternative> getRome2RioAlternatives(String partenza, String destinazione) {
+	public ArrayList<TripAlternativeRome2Rio> getRome2RioAlternatives(String partenza, String destinazione) {
 		
-		 ArrayList<TripAlternative> alternatives = new ArrayList<TripAlternative>();
+		 ArrayList<TripAlternativeRome2Rio> alternatives = new ArrayList<TripAlternativeRome2Rio>();
 		 String result = callURL("http://free.rome2rio.com/api/1.4/json/Search?key=Yt1V3vTI&oName="+partenza+"&dName="+destinazione);
 		if(result.equalsIgnoreCase("erroreAPI"))
 		{
@@ -60,7 +60,7 @@ public class Rome2RioAPIWrapper {
 				Double duration = route.getDouble("totalDuration");
 				
 				
-				TripAlternative alternative = new TripAlternative(mean, priceInd, duration, distance, number_changes);
+				TripAlternativeRome2Rio alternative = new TripAlternativeRome2Rio(mean, priceInd, duration, distance, number_changes);
 				alternatives.add(alternative);
 			
 			}

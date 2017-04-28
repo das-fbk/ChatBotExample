@@ -1,10 +1,14 @@
 package utils;
 
-public class TripAlternative {
+public class TripAlternativeRome2Rio {
 	
-	
+	private String mean;
+	private Double price;
+	private Double duration;
+	private Double distance;
+	private Integer number_changes;
 
-	public TripAlternative(String mean, Double price, Double duration, Double distance, Integer number_changes) {
+	public TripAlternativeRome2Rio(String mean, Double price, Double duration, Double distance, Integer number_changes) {
 		super();
 		this.mean = mean;
 		this.price = price;
@@ -12,11 +16,7 @@ public class TripAlternative {
 		this.distance = distance;
 		this.number_changes = number_changes;
 	}
-	private String mean;
-	private Double price;
-	private Double duration;
-	private Double distance;
-	private Integer number_changes;
+	
 	
 	public Integer getNumber_changes() {
 		return number_changes;
