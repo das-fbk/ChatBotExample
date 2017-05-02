@@ -190,7 +190,11 @@ public class Texts {
     
     
     public static String  textBlaBlaCarResult(Language language, ArrayList <TravelBlaBlaCar> travels, String choose) {
-    	String result = "";
+    	String result = getMessage("blablacarbestway", language.locale())+"\n";
+    	result += "        "+travels.get(0).getPerfect_price()+"    "+travels.get(0).getPerfect_duration()+"    "+travels.get(0).getDistance()+"\n";
+    	result += "        "+ "\ud83d\udd35 "+getMessage("blablacargoodprice", language.locale())+"\n";
+    	result += "        "+ "\ud83d\udd34 "+getMessage("blablacarbadprice", language.locale())+"\n";
+    	result += getMessage("rome2riodifferentway", language.locale());
     	
     	return result;
     }

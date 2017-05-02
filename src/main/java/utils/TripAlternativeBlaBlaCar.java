@@ -2,28 +2,38 @@ package utils;
 
 public class TripAlternativeBlaBlaCar {
 	
+	String id;
 	Double price;
 	Integer seats_left;
 	String date;
 	String hour;
-	Integer duration;
 	String car_model;
 	Integer distance;
 	Integer perfect_duration;
 	Double recommended_price;
 	
 	
-	public TripAlternativeBlaBlaCar(Double price, Integer seats_left, String date, String hour, Integer duration, String car_model, Integer distance, Integer perfect_duration, Double recommended_price) {
+	public TripAlternativeBlaBlaCar(String id,Double price, Integer seats_left, String date, String hour, String car_model, Integer distance, Integer perfect_duration, Double recommended_price) {
 		super();
+		this.id = id;
 		this.price = price;
 		this.seats_left = seats_left;
 		this.date = date;
 		this.hour = hour;
-		this.duration = duration;
 		this.car_model = car_model;
 		this.distance = distance;
 		this.perfect_duration = perfect_duration;
 		this.recommended_price = recommended_price;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 
@@ -65,17 +75,6 @@ public class TripAlternativeBlaBlaCar {
 	public void setHour(String hour) {
 		this.hour = hour;
 	}
-
-
-	public Integer getDuration() {
-		return duration;
-	}
-
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
-
 
 	public String getCar_model() {
 		return car_model;

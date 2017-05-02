@@ -3,10 +3,12 @@ package it.das.travelassistant.telegram.updateshandlers;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.MANUAL;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.STARTCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEAT;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelRomeToRio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelBlaBlaCar;
@@ -247,21 +249,6 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					 
 					 if (blaBlaCarAlternatives.size() != 0) {
 						 sendMessageDefault(message, keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, "NULL"), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), ""));
-						 
-						 /* print the results
-						for(int i = 0;i<blaBlaCarAlternatives.size();i++) {
-							System.out.println("\n\nprice: "+blaBlaCarAlternatives.get(i).getPrice());
-							System.out.println("seats left: "+blaBlaCarAlternatives.get(i).getSeats_left());
-							System.out.println("start date: "+blaBlaCarAlternatives.get(i).getDate());
-							System.out.println("start hour: "+blaBlaCarAlternatives.get(i).getHour());
-							System.out.println("trip duration: "+blaBlaCarAlternatives.get(i).getDuration());
-							System.out.println("car: "+blaBlaCarAlternatives.get(i).getCar_model());
-							System.out.println("distance: "+blaBlaCarAlternatives.get(i).getDistance());
-							System.out.println("perfect duration: "+blaBlaCarAlternatives.get(i).getPerfect_duration());
-							System.out.println("recommended price: "+blaBlaCarAlternatives.get(i).getRecommended_price());
-							System.out.println("\n\n");
-						}
-						*/
 					}
 					 
 				break;
@@ -279,6 +266,22 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							break;
 						case DISTANCE:
 							sendMessageDefault(message,keyboardRome2RioResult(chatId, romeToRioAlternatives, message.getText()), textRome2RioResult(Current.getLanguage(chatId), getDifferentWayTravelRomeToRio(), message.getText()));
+							break;
+						default:
+							break;
+					}
+				break;
+				
+				case BLABLACARRESULT:
+					switch(message.getText()) {
+						case DATEHOUR:
+							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
+							break;
+						case PRICE:
+							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
+							break;
+						case SEAT:
+							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
 							break;
 						default:
 							break;

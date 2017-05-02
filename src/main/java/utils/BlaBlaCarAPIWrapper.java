@@ -41,6 +41,8 @@ public class BlaBlaCarAPIWrapper {
 				
 				Integer seats_left = route.getInt("seats_left");
 				
+				String id =route.getString("permanent_id");
+				
 				String date =route.getString("departure_date").substring(0, 10);
 				String hour =route.getString("departure_date").substring(11, 19);
 				
@@ -60,19 +62,9 @@ public class BlaBlaCarAPIWrapper {
 				}else {
 					carmodel = "null";
 				}
-				
-				
-				Integer duration;
-				if(route.has("duration")) {
-					JSONObject totalduration = route.getJSONObject("duration");
-					duration = totalduration.getInt("value");
-				}else {
-					duration = 0;
-				}
-				
 
 				if(seats_left > 0) {
-					TripAlternativeBlaBlaCar alternative = new TripAlternativeBlaBlaCar(priceInd, seats_left, date, hour, duration, carmodel, distance, perfect_duration, recommended_price);
+					TripAlternativeBlaBlaCar alternative = new TripAlternativeBlaBlaCar(id, priceInd, seats_left, date, hour, carmodel, distance, perfect_duration, recommended_price);
 					alternatives.add(alternative);
 				}
 			

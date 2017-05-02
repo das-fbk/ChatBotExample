@@ -129,15 +129,55 @@ public class Keyboards {
 		List<KeyboardRow> keyboard = new ArrayList<>();
 		
 		keyboard.add(new KeyboardRow());
+		keyboard.get(0).add(DATEHOUR);
         keyboard.get(0).add(PRICE);
-        keyboard.get(0).add(DATEHOUR);
         keyboard.get(0).add(SEAT);
-        keyboard.get(0).add(TIME);
+        
 		
         travelsBlaBlaCar = new ArrayList<TravelBlaBlaCar>();
-		
-		//da implementare come la funzione keyboardRome2RioResult
-		
+
+        for (int i = 0; i < alternatives.size(); i++) {
+        	String dateHour = alternatives.get(i).getDate() + " " + alternatives.get(i).getHour().substring(0, 5) + "\ud83d\udcc5";
+        	String price;
+        	if(alternatives.get(i).getPrice() < alternatives.get(i).getRecommended_price()) {
+        		price = "\ud83d\udd35"+ alternatives.get(i).getPrice() + " \u20ac";
+        	}else {
+        		price = "\ud83d\udd34" + alternatives.get(i).getPrice() + " \u20ac";
+        	}
+        	String seats_left = alternatives.get(i).getSeats_left() + "\ud83d\udcba";
+        	String car_model = alternatives.get(i).getCar_model() + "\ud83d\ude98"; 
+        	String distance = alternatives.get(i).getDistance() + " Km";
+        	int mins = alternatives.get(i).getPerfect_duration() % 3600;
+        	int hour = alternatives.get(i).getPerfect_duration() / 3600;
+        	String perfect_duration = hour+"."+mins+" h";
+        	String perfect_price = alternatives.get(i).getRecommended_price() + " \u20ac";
+        	
+        	String mean = (i+1) +".  "+dateHour+"     "+price+"     "+seats_left;
+        	
+			if(alternatives.get(i).getSeats_left() > 0) {
+				travelsBlaBlaCar.add(new TravelBlaBlaCar(mean, dateHour, price, seats_left, car_model, distance, perfect_duration, perfect_price));
+			}
+			
+		}
+        
+        switch(filter) {
+			case PRICE:
+					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.priceComparator);
+				break;
+			case SEAT:
+					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.seatsComparator);
+				break;
+			default:
+					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.dateHourComparator);
+				break;
+        }
+        
+        for (int i = 0; i < travelsBlaBlaCar.size(); i++) {
+			keyboard.add(keyboardRowButton(travelsBlaBlaCar.get(i).getMean()));
+		}
+        
+        replyKeyboardMarkup.setKeyboard(keyboard);
+
 		Current.setMenu(chatId, menu);
 		return replyKeyboardMarkup;
 	}
