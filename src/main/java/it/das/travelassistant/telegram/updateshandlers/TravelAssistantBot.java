@@ -8,7 +8,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.STARTCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEAT;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.RIDERRATING;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelRomeToRio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelBlaBlaCar;
@@ -277,7 +277,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 						case PRICE:
 							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
 							break;
-						case SEAT:
+						case RIDERRATING:
 							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
 							break;
 						default:

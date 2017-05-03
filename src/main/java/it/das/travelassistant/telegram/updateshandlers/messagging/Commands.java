@@ -16,7 +16,7 @@ public class Commands {
     public static final String DISTANCE = "\u21e5";
     
     public static final String DATEHOUR = "\ud83d\udcc5";
-    public static final String SEAT = "\ud83d\udcba";
+    public static final String RIDERRATING = "\u2b50";
 
     
     public static final String ROME2RIO = "ROME2RIO";

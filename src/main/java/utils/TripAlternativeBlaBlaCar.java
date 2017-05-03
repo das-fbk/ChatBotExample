@@ -3,6 +3,7 @@ package utils;
 public class TripAlternativeBlaBlaCar {
 	
 	String id;
+	Double rider_rating;
 	Double price;
 	Integer seats_left;
 	String date;
@@ -13,9 +14,10 @@ public class TripAlternativeBlaBlaCar {
 	Double recommended_price;
 	
 	
-	public TripAlternativeBlaBlaCar(String id,Double price, Integer seats_left, String date, String hour, String car_model, Integer distance, Integer perfect_duration, Double recommended_price) {
+	public TripAlternativeBlaBlaCar(String id, Double rider_rating, Double price, Integer seats_left, String date, String hour, String car_model, Integer distance, Integer perfect_duration, Double recommended_price) {
 		super();
 		this.id = id;
+		this.rider_rating = rider_rating;
 		this.price = price;
 		this.seats_left = seats_left;
 		this.date = date;
@@ -34,6 +36,16 @@ public class TripAlternativeBlaBlaCar {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+
+	public Double getRider_rating() {
+		return rider_rating;
+	}
+
+
+	public void setRider_rating(Double rider_rating) {
+		this.rider_rating = rider_rating;
 	}
 
 

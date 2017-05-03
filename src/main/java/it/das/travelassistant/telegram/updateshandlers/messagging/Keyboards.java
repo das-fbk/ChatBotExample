@@ -9,7 +9,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEAT;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.RIDERRATING;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,7 +132,7 @@ public class Keyboards {
 		keyboard.add(new KeyboardRow());
 		keyboard.get(0).add(DATEHOUR);
         keyboard.get(0).add(PRICE);
-        keyboard.get(0).add(SEAT);
+        keyboard.get(0).add(RIDERRATING);
         
 		
         travelsBlaBlaCar = new ArrayList<TravelBlaBlaCar>();
@@ -149,6 +149,7 @@ public class Keyboards {
         	}
         	
         	String seats_left = alternatives.get(i).getSeats_left() + "\ud83d\udcba";
+        	String rider_rating = alternatives.get(i).getRider_rating() +"/5"+ "\u2b50";
         	String car_model; 
         	if(alternatives.get(i).getCar_model().equals("null")) {
         		car_model = "\ud83d\ude98"; 
@@ -165,10 +166,10 @@ public class Keyboards {
         	
         	String perfect_price = alternatives.get(i).getRecommended_price() + " \u20ac";
         	
-        	String mean = (i+1) +".  "+dateHour+"     "+price+"     "+seats_left;
+        	String mean = (i+1) +".  "+dateHour+"     "+price+"     "+rider_rating;
         	
 			if(alternatives.get(i).getSeats_left() > 0) {
-				travelsBlaBlaCar.add(new TravelBlaBlaCar(mean, dateHour, price, seats_left, car_model, distance, perfect_duration, perfect_price));
+				travelsBlaBlaCar.add(new TravelBlaBlaCar(mean, rider_rating, dateHour, price, seats_left, car_model, distance, perfect_duration, perfect_price));
 			}
 			
 		}
@@ -177,8 +178,8 @@ public class Keyboards {
 			case PRICE:
 					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.priceComparator);
 				break;
-			case SEAT:
-					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.seatsComparator);
+			case RIDERRATING:
+					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.riderRatingComparator);
 				break;
 			default:
 					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.dateHourComparator);

@@ -5,7 +5,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEAT;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.RIDERRATING;
 import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
 
@@ -134,31 +134,34 @@ public class Texts {
 		    		for(int i = 0;i<travels.size();i++) {
 		        		result += travels.get(i).getMean().substring(0,4)+travels.get(i).getDateHour()+
 		        						"     "+"*"+travels.get(i).getPrice()+"*"+
-		        						"     "+travels.get(i).getSeats_left()+
+		        						"     "+travels.get(i).getRider_rating()+"\n"+
+		        						"          "+travels.get(i).getSeats_left()+
 		        						"     "+travels.get(i).getCar_model()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     DATE&TIME"+DATEHOUR+"        *PRICE*"+PRICE+"        SEATS AVAILABLE"+SEAT+"\n\n";
+		    		result+="     DATE&TIME"+DATEHOUR+"        *PRICE*"+PRICE+"        RIDER RATING"+RIDERRATING+"\n\n";
 	    		break;
-	    	case SEAT:
+	    	case RIDERRATING:
 		    		for(int i = 0;i<travels.size();i++) {
 		        		result += travels.get(i).getMean().substring(0,4)+travels.get(i).getDateHour()+
 		        						"     "+travels.get(i).getPrice()+
-		        						"     "+"*"+travels.get(i).getSeats_left()+"*"+
+		        						"     "+"*"+travels.get(i).getRider_rating()+"*"+"\n"+
+		        						"          "+travels.get(i).getSeats_left()+
 		        						"     "+travels.get(i).getCar_model()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     DATE&TIME"+DATEHOUR+"        PRICE"+PRICE+"        *SEATS AVAILABLE*"+SEAT+"\n\n";
+		    		result+="     DATE&TIME"+DATEHOUR+"        PRICE"+PRICE+"        *RIDER RATING*"+RIDERRATING+"\n\n";
 	    		break;
 	    	default:
 		    		for(int i = 0;i<travels.size();i++) {
 		        		result += travels.get(i).getMean().substring(0,4)+"*"+travels.get(i).getDateHour()+"*"+
 		        						"     "+travels.get(i).getPrice()+
-		        						"     "+travels.get(i).getSeats_left()+
+		        						"     "+travels.get(i).getRider_rating()+"\n"+
+		        						"          "+travels.get(i).getSeats_left()+
 		        						"     "+travels.get(i).getCar_model()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     *DATE&TIME*"+DATEHOUR+"        PRICE"+PRICE+"        SEATS AVAILABLE"+SEAT+"\n\n";
+		    		result+="     *DATE&TIME*"+DATEHOUR+"        PRICE"+PRICE+"        RIDER RATING"+RIDERRATING+"\n\n";
 	    		break;
     	}
     	
