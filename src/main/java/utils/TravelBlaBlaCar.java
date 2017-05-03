@@ -122,10 +122,9 @@ public class TravelBlaBlaCar {
 
         public int compare(TravelBlaBlaCar t1, TravelBlaBlaCar t2) {
         	
-        	Double travel1 = Double.parseDouble(CharMatcher.DIGIT.retainFrom(t1.getRider_rating()));
-        	Double travel2 = Double.parseDouble(CharMatcher.DIGIT.retainFrom(t2.getRider_rating()));
-
-            return Double.compare(travel2, travel1);
+        	int value = CharMatcher.DIGIT.retainFrom(t2.getRider_rating()).compareTo(CharMatcher.DIGIT.retainFrom(t1.getRider_rating()));
+        	
+        	return value;
         }
     };
     
