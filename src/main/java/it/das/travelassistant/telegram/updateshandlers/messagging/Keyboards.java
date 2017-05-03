@@ -24,6 +24,7 @@ import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
 import utils.TripAlternativeRome2Rio;
 import utils.TripAlternativeBlaBlaCar;
+import java.text.DecimalFormat;
 
 /**
  * Created by bucchiarone@fbk.eu
@@ -139,17 +140,29 @@ public class Keyboards {
         for (int i = 0; i < alternatives.size(); i++) {
         	String dateHour = alternatives.get(i).getDate() + " " + alternatives.get(i).getHour().substring(0, 5) + "\ud83d\udcc5";
         	String price;
-        	if(alternatives.get(i).getPrice() < alternatives.get(i).getRecommended_price()) {
-        		price = "\ud83d\udd35"+ alternatives.get(i).getPrice() + " \u20ac";
-        	}else {
+        	if(alternatives.get(i).getPrice() == alternatives.get(i).getRecommended_price()) {
+        		price = "\ud83d\udd36" + alternatives.get(i).getPrice() + " \u20ac";
+        	}else if(alternatives.get(i).getPrice() < alternatives.get(i).getRecommended_price()) {
+        		price = "\ud83d\udd35" + alternatives.get(i).getPrice() + " \u20ac";
+        	}else{
         		price = "\ud83d\udd34" + alternatives.get(i).getPrice() + " \u20ac";
         	}
+        	
         	String seats_left = alternatives.get(i).getSeats_left() + "\ud83d\udcba";
-        	String car_model = alternatives.get(i).getCar_model() + "\ud83d\ude98"; 
+        	String car_model; 
+        	if(alternatives.get(i).getCar_model().equals("null")) {
+        		car_model = "\ud83d\ude98"; 
+        	}else {
+        		car_model = alternatives.get(i).getCar_model() + "\ud83d\ude98"; 
+        	}
         	String distance = alternatives.get(i).getDistance() + " Km";
-        	int mins = alternatives.get(i).getPerfect_duration() % 3600;
+        	
+        	double mins = (alternatives.get(i).getPerfect_duration() % 3600) / 3600.0;
         	int hour = alternatives.get(i).getPerfect_duration() / 3600;
-        	String perfect_duration = hour+"."+mins+" h";
+        	DecimalFormat df = new DecimalFormat("#.##");
+        	String dx=df.format(hour+mins);
+        	String perfect_duration = dx+" h";
+        	
         	String perfect_price = alternatives.get(i).getRecommended_price() + " \u20ac";
         	
         	String mean = (i+1) +".  "+dateHour+"     "+price+"     "+seats_left;

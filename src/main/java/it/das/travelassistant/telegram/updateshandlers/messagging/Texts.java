@@ -4,56 +4,20 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
-import it.sayservice.platform.smartplanner.data.message.otpbeans.Parking;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEAT;
 import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import eu.trentorise.smartcampus.mobilityservice.model.TaxiContact;
-import eu.trentorise.smartcampus.mobilityservice.model.TimeTable;
 
 /**
  * Created by antbucc
  */
 public class Texts {
-
-    // region utilities
-
-    private static String textTimetable(TimeTable timeTable, int index) {
-        String text = "";
-
-        List<String> stops = timeTable.getStops();
-        List<String> times = timeTable.getTimes().get(index);
-
-        for (String time : times)
-            if (!time.isEmpty())
-                text += "`" + time + "` - " + stops.get(times.indexOf(time)) + "\n";
-
-        return text;
-    }
-
-    private static String textSlots(Parking parking, Language language) {
-    	if (parking.isMonitored() && parking.getSlotsAvailable() >= 0) {
-        	return getMessage("slotsmonitored", language.locale(), ""+parking.getSlotsAvailable(), ""+parking.getSlotsTotal());
-    	} else {
-        	return getMessage("slots", language.locale(), ""+parking.getSlotsTotal());
-    	}
-    }
-
-    private static String textNear(List<Parking> parkings, String notemplate, Language language) {
-    	String text = getMessage("near", language.locale());
-        if (parkings.isEmpty())
-            text = getMessage(notemplate, language.locale());
-        else
-            for (Parking park : parkings)
-                text += "\n" + park.getName() + " : " + park.getDescription();
-        return text;
-    }
 
 
     public static String textStart(Language language) {
@@ -64,10 +28,6 @@ public class Texts {
     	return getMessage("error", language.locale());
     }
 
-    // endregion commands
-
-    // region Menu.START
-
     public static String textStartHelp(Language language) {
         return textStart(language);
     }
@@ -76,35 +36,7 @@ public class Texts {
     public static String textCalculateTrip(Language language) {
     	return getMessage("calculateTrip", language.locale());
     }
-
-    public static String textStartTaxi(List<TaxiContact> taxi) {
-        String text;
-        text = "*TAXI*";
-
-        for (TaxiContact el : taxi) {
-            text += "\n*" + el.getName() + "*";
-            for (String st : el.getPhone())
-                text += "\n" + st;
-            for (String st : el.getSms())
-                text += st.equals("") ? "" : "\n" + st;
-        }
-
-        return text;
-    }
-
-    public static String textStartAutobus(Language language) {
-    	return getMessage("startbus", language.locale());
-    }
-   
-   
-
-    public static String textStartTrains(Language language) {
-    	return getMessage("starttrain", language.locale());
-    }
-
-    public static String textStartParkings(Language language) {
-    	return getMessage("startparking", language.locale());
-    }
+    
     public static String textStartFrom(Language language) {
     	return getMessage("startFrom", language.locale());
     }
@@ -193,50 +125,48 @@ public class Texts {
     	String result = getMessage("blablacarbestway", language.locale())+"\n";
     	result += "        "+travels.get(0).getPerfect_price()+"    "+travels.get(0).getPerfect_duration()+"    "+travels.get(0).getDistance()+"\n";
     	result += "        "+ "\ud83d\udd35 "+getMessage("blablacargoodprice", language.locale())+"\n";
-    	result += "        "+ "\ud83d\udd34 "+getMessage("blablacarbadprice", language.locale())+"\n";
-    	result += getMessage("rome2riodifferentway", language.locale());
+    	result += "        "+ "\ud83d\udd36 "+getMessage("blablacarokprice", language.locale())+"\n";
+    	result += "        "+ "\ud83d\udd34 "+getMessage("blablacarbadprice", language.locale())+"\n\n";
+    	result += getMessage("rome2riodifferentway", language.locale())+"\n";
+    	
+    	switch(choose) {
+	    	case PRICE:
+		    		for(int i = 0;i<travels.size();i++) {
+		        		result += travels.get(i).getMean().substring(0,4)+travels.get(i).getDateHour()+
+		        						"     "+"*"+travels.get(i).getPrice()+"*"+
+		        						"     "+travels.get(i).getSeats_left()+
+		        						"     "+travels.get(i).getCar_model()+"\n\n";
+		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     DATE&TIME"+DATEHOUR+"        *PRICE*"+PRICE+"        SEATS AVAILABLE"+SEAT+"\n\n";
+	    		break;
+	    	case SEAT:
+		    		for(int i = 0;i<travels.size();i++) {
+		        		result += travels.get(i).getMean().substring(0,4)+travels.get(i).getDateHour()+
+		        						"     "+travels.get(i).getPrice()+
+		        						"     "+"*"+travels.get(i).getSeats_left()+"*"+
+		        						"     "+travels.get(i).getCar_model()+"\n\n";
+		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     DATE&TIME"+DATEHOUR+"        PRICE"+PRICE+"        *SEATS AVAILABLE*"+SEAT+"\n\n";
+	    		break;
+	    	default:
+		    		for(int i = 0;i<travels.size();i++) {
+		        		result += travels.get(i).getMean().substring(0,4)+"*"+travels.get(i).getDateHour()+"*"+
+		        						"     "+travels.get(i).getPrice()+
+		        						"     "+travels.get(i).getSeats_left()+
+		        						"     "+travels.get(i).getCar_model()+"\n\n";
+		        	}
+		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
+		    		result+="     *DATE&TIME*"+DATEHOUR+"        PRICE"+PRICE+"        SEATS AVAILABLE"+SEAT+"\n\n";
+	    		break;
+    	}
+    	
+    	result+=getMessage("rome2rioresult", language.locale());
     	
     	return result;
     }
-    
-    public static String  textViaggiaTrentoResult(Language language) {
-    	return getMessage("viaggiatrentoresult", language.locale());
-    }
 
-    
-    public static String  textViaggiaTimeDeparture(Language language) {
-    	return getMessage("viaggiatimedeparture", language.locale());
-    }
-
-    
-   
-
-    public static String textStartBikeSharings(Language language) {
-    	return getMessage("startbikesharing", language.locale());
-    }
-
-
-
-
-
-
-
-
-    public static String textParkingsNear(List<Parking> parkings, Language language) {
-        return textNear(parkings, "nonearparking", language);
-    }
-
-
-	private static String bikeSlots(Parking parking, Language language) {
-    	return getMessage("bikeslots", language.locale(), ""+parking.getSlotsAvailable(), ""+parking.getExtra().get("bikes"));
-	}
-
-	public static String textBikeSharingsNear(List<Parking> parkings, Language language) {
-        return textNear(parkings, "nonearbs", language);
-
-    }
-
-    // endregion Menu.BIKESHARINGS
 
     private static String getMessage(String msg, Locale locale, String ... params) {
     	ResourceBundle bundle = ResourceBundle.getBundle("MessageBundle", locale);

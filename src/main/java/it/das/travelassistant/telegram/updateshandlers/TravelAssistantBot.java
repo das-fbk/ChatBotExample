@@ -35,7 +35,6 @@ import java.util.concurrent.ExecutionException;
 
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -161,8 +160,6 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 	public void onUpdateReceived(Update update) {
 
 		try {
-			if (update.hasCallbackQuery())
-				handleIncomingCallbackQuery(update.getCallbackQuery());
 
 			if (update.hasMessage()) {
 				Message message = update.getMessage();
@@ -293,12 +290,6 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 		}
 	}
 
-	private void handleIncomingCallbackQuery(CallbackQuery cbq)
-			throws TelegramApiException, MobilityServiceException,
-			ExecutionException {
-		Message message = cbq.getMessage();
-
-	}
 
 	private void sendMessageDefaultWithReply(Message message,
 			ReplyKeyboard keyboard, String text) throws TelegramApiException {
