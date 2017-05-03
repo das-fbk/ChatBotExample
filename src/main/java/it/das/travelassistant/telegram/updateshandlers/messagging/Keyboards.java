@@ -139,12 +139,12 @@ public class Keyboards {
 
         for (int i = 0; i < alternatives.size(); i++) {
         	String dateHour = alternatives.get(i).getDate() + " " + alternatives.get(i).getHour().substring(0, 5) + "\ud83d\udcc5";
-        	String price;
-        	if(alternatives.get(i).getPrice() == alternatives.get(i).getRecommended_price()) {
+        	String price = "";
+        	if(alternatives.get(i).getPrice() <= alternatives.get(i).getRecommended_price() + 0.5 && alternatives.get(i).getPrice() >= alternatives.get(i).getRecommended_price() - 0.5) {
         		price = "\ud83d\udd36" + alternatives.get(i).getPrice() + " \u20ac";
-        	}else if(alternatives.get(i).getPrice() < alternatives.get(i).getRecommended_price()) {
+        	}else if(alternatives.get(i).getPrice() < alternatives.get(i).getRecommended_price() - 0.5) {
         		price = "\ud83d\udd35" + alternatives.get(i).getPrice() + " \u20ac";
-        	}else{
+        	}else if (alternatives.get(i).getPrice() > alternatives.get(i).getRecommended_price() + 0.5){
         		price = "\ud83d\udd34" + alternatives.get(i).getPrice() + " \u20ac";
         	}
         	
