@@ -60,20 +60,9 @@ public class BlaBlaCarAPIWrapper {
 					carmodel = "null";
 				}
 				
-				double rider_rating = 0.0;
-				if(route.has("rider_rating")) {
-					//da implementare quando avro il json completo
-				}else {
-					Random r = new Random();
-					DecimalFormat df = new DecimalFormat("#.##");
-		        	String dx=df.format(0.0 + (5.0 - 0.0) * r.nextDouble());
-		        	rider_rating = Double.parseDouble(dx);
-					//da mettere a null se non e presente un rating
-					//rider_rating = null;
-				}
 
 				if(seats_left > 0) {
-					TripAlternativeBlaBlaCar alternative = new TripAlternativeBlaBlaCar(id, rider_rating, priceInd, seats_left, date, hour, carmodel, distance, perfect_duration, recommended_price);
+					TripAlternativeBlaBlaCar alternative = new TripAlternativeBlaBlaCar(id, priceInd, seats_left, date, hour, carmodel, distance, perfect_duration, recommended_price);
 					alternatives.add(alternative);
 				}
 			

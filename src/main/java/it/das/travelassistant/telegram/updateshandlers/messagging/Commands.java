@@ -16,11 +16,16 @@ public class Commands {
     public static final String DISTANCE = "\u21e5";
     
     public static final String DATEHOUR = "\ud83d\udcc5";
-    public static final String RIDERRATING = "\u2b50";
+    public static final String SEATS = "\ud83d\udcba";
 
     
     public static final String ROME2RIO = "ROME2RIO";
     public static final String BLABLACAR = "BLABLACAR";
+    public static final String VIAGGIATRENTO = "VIAGGIATRENTO";
+    
+    public static final String WALKVIAGGIATRENTO = "\ud83c\udfc3";
+    public static final String TRAINVIAGGIATRENTO = "\ud83d\ude82";
+    public static final String BUSVIAGGIATRENTO = "\ud83d\ude8c";
     
     
     public static final String CALCOLA = "\ud83d\udd0d"+"CALCOLA";

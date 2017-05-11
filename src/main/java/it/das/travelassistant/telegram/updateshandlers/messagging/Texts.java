@@ -1,16 +1,21 @@
 package it.das.travelassistant.telegram.updateshandlers.messagging;
 
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BUSVIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TRAINVIAGGIATRENTO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.WALKVIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.RIDERRATING;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
+import utils.TravelViaggiaTrento;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -37,6 +42,14 @@ public class Texts {
     	return getMessage("calculateTrip", language.locale());
     }
     
+    public static String textChooseViaggiaTrentoStart(Language language) {
+    	return getMessage("chooseviaggiatrentostart", language.locale());
+    }
+   
+    public static String textChooseViaggiaTrentoDestination(Language language) {
+    	return getMessage("chooseviaggiatrentoarrive", language.locale());
+    }
+    
     public static String textStartFrom(Language language) {
     	return getMessage("startFrom", language.locale());
     }
@@ -58,7 +71,11 @@ public class Texts {
 		    			Float help = Float.parseFloat(travels.get(i).getDuration());
 		    			rest = help.intValue() % 60;
 		    			hour = help.intValue() / 60;
-		    			durationString = hour+"."+rest+" h";
+		    			if(rest<10) {
+		    				durationString = hour+".0"+rest+" h";
+		    			}else {
+		    				durationString = hour+"."+rest+" h";
+		    			}
 		        		result += travels.get(i).getMean()+"\n"+
 		        					"        "+travels.get(i).getCost() +
 		        					"    "+"*"+durationString+"*"+
@@ -73,7 +90,11 @@ public class Texts {
 		    			Float help = Float.parseFloat(travels.get(i).getDuration());
 		    			rest = help.intValue() % 60;
 		    			hour = help.intValue() / 60;
-		    			durationString = hour+"."+rest+" h";
+		    			if(rest<10) {
+		    				durationString = hour+".0"+rest+" h";
+		    			}else {
+		    				durationString = hour+"."+rest+" h";
+		    			}
 		        		result += travels.get(i).getMean()+"\n"+
 		        					"        "+travels.get(i).getCost() +
 		        					"    "+durationString+
@@ -88,7 +109,11 @@ public class Texts {
 		    			Float help = Float.parseFloat(travels.get(i).getDuration());
 		    			rest = help.intValue() % 60;
 		    			hour = help.intValue() / 60;
-		    			durationString = hour+"."+rest+" h";
+		    			if(rest<10) {
+		    				durationString = hour+".0"+rest+" h";
+		    			}else {
+		    				durationString = hour+"."+rest+" h";
+		    			}
 		        		result += travels.get(i).getMean()+"\n"+
 		        					"        "+travels.get(i).getCost() +
 		        					"    "+durationString+
@@ -103,7 +128,11 @@ public class Texts {
 		    			Float help = Float.parseFloat(travels.get(i).getDuration());
 		    			rest = help.intValue() % 60;
 		    			hour = help.intValue() / 60;
-		    			durationString = hour+"."+rest+" h";
+		    			if(rest<10) {
+		    				durationString = hour+".0"+rest+" h";
+		    			}else {
+		    				durationString = hour+"."+rest+" h";
+		    			}
 		        		result += travels.get(i).getMean()+"\n"+
 		        					"        "+"*"+travels.get(i).getCost() +"*"+
 		        					"    "+durationString+
@@ -134,34 +163,31 @@ public class Texts {
 		    		for(int i = 0;i<travels.size();i++) {
 		        		result += travels.get(i).getMean().substring(0,4)+travels.get(i).getDateHour()+
 		        						"     "+"*"+travels.get(i).getPrice()+"*"+
-		        						"     "+travels.get(i).getRider_rating()+"\n"+
-		        						"          "+travels.get(i).getSeats_left()+
-		        						"     "+travels.get(i).getCar_model()+"\n\n";
+		        						"     "+travels.get(i).getSeats_left()+"\n"+
+		        						"          "+travels.get(i).getCar_model()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     DATE&TIME"+DATEHOUR+"        *PRICE*"+PRICE+"        RIDER RATING"+RIDERRATING+"\n\n";
+		    		result+="     DATE&TIME"+DATEHOUR+"        *PRICE*"+PRICE+"        SEATS"+SEATS+"\n\n";
 	    		break;
-	    	case RIDERRATING:
+	    	case SEATS:
 		    		for(int i = 0;i<travels.size();i++) {
 		        		result += travels.get(i).getMean().substring(0,4)+travels.get(i).getDateHour()+
 		        						"     "+travels.get(i).getPrice()+
-		        						"     "+"*"+travels.get(i).getRider_rating()+"*"+"\n"+
-		        						"          "+travels.get(i).getSeats_left()+
-		        						"     "+travels.get(i).getCar_model()+"\n\n";
+		        						"     "+"*"+travels.get(i).getSeats_left()+"*"+"\n"+
+		        						"          "+travels.get(i).getCar_model()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     DATE&TIME"+DATEHOUR+"        PRICE"+PRICE+"        *RIDER RATING*"+RIDERRATING+"\n\n";
+		    		result+="     DATE&TIME"+DATEHOUR+"        PRICE"+PRICE+"        *SEATS*"+SEATS+"\n\n";
 	    		break;
 	    	default:
 		    		for(int i = 0;i<travels.size();i++) {
 		        		result += travels.get(i).getMean().substring(0,4)+"*"+travels.get(i).getDateHour()+"*"+
 		        						"     "+travels.get(i).getPrice()+
-		        						"     "+travels.get(i).getRider_rating()+"\n"+
-		        						"          "+travels.get(i).getSeats_left()+
-		        						"     "+travels.get(i).getCar_model()+"\n\n";
+		        						"     "+travels.get(i).getSeats_left()+"\n"+
+		        						"          "+travels.get(i).getCar_model()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     *DATE&TIME*"+DATEHOUR+"        PRICE"+PRICE+"        RIDER RATING"+RIDERRATING+"\n\n";
+		    		result+="     *DATE&TIME*"+DATEHOUR+"        PRICE"+PRICE+"        SEATS"+SEATS+"\n\n";
 	    		break;
     	}
     	
@@ -181,5 +207,34 @@ public class Texts {
         return formatter.format(params);
    
     }
+    
+    public static String  textViaggiaTrentoTrip(Language language, ArrayList <TravelViaggiaTrento> travels) {
+    	String result = getMessage("rome2riodifferentway", language.locale())+"\n";
+    	for(int i = 0;i<travels.size();i++) {
+    		int rest = Integer.parseInt(travels.get(i).getDuration()) % 60;
+    		int hour = Integer.parseInt(travels.get(i).getDuration()) / 60;
+    		if(rest<10) {
+    			result += "\n*"+(i+1)+". "+"\u23f1"+hour+".0"+rest+"h*\n";
+    		}else {
+    			result += "\n*"+(i+1)+". "+"\u23f1"+hour+"."+rest+"h*\n";
+    		}
+    		
+    		for(int j =0;j<travels.get(i).getRoutes().size();j++) {
+    			if(travels.get(i).getSteps().get(j).equals("BUS")) {
+    				result += "    "+BUSVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
+				}else if(travels.get(i).getSteps().get(j).equals("TRAIN")) {
+					result += "    "+TRAINVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
+				}else{
+					result += "    "+WALKVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
+				}
+    			
+    		}
+    		
+    	}
+    	result+="\n";
+    	result+=getMessage("rome2rioresult", language.locale());
+    	return result;
+    }
+
     
 }

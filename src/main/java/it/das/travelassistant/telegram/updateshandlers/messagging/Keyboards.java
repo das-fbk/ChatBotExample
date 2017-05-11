@@ -3,13 +3,19 @@ package it.das.travelassistant.telegram.updateshandlers.messagging;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CALCOLA;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.VIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.MANUAL;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.RIDERRATING;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.WALKVIAGGIATRENTO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TRAINVIAGGIATRENTO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BUSVIAGGIATRENTO;
+
+import utils.ViaggiaTrentoAPIWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +27,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import utils.TravelRome2Rio;
+import utils.TravelViaggiaTrento;
 import utils.TravelBlaBlaCar;
 import utils.TripAlternativeRome2Rio;
 import utils.TripAlternativeBlaBlaCar;
@@ -34,6 +41,7 @@ public class Keyboards {
 	// region utilities
 	private static ArrayList<TravelRome2Rio> travelsRomeToRio;
 	private static ArrayList<TravelBlaBlaCar> travelsBlaBlaCar;
+	private static ArrayList<TravelViaggiaTrento> travelsViaggiaTrento;
 
 	private static ReplyKeyboardMarkup keyboard() {
 		ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -60,6 +68,10 @@ public class Keyboards {
 	
 	public static ArrayList <TravelBlaBlaCar> getDifferentWayTravelBlaBlaCar() {
 		return travelsBlaBlaCar;
+	}
+	
+	public static ArrayList <TravelViaggiaTrento> getDifferentWayTravelViaggiaTrento() {
+		return travelsViaggiaTrento;
 	}
 	
 	
@@ -132,7 +144,7 @@ public class Keyboards {
 		keyboard.add(new KeyboardRow());
 		keyboard.get(0).add(DATEHOUR);
         keyboard.get(0).add(PRICE);
-        keyboard.get(0).add(RIDERRATING);
+        keyboard.get(0).add(SEATS);
         
 		
         travelsBlaBlaCar = new ArrayList<TravelBlaBlaCar>();
@@ -149,7 +161,6 @@ public class Keyboards {
         	}
         	
         	String seats_left = alternatives.get(i).getSeats_left() + "\ud83d\udcba";
-        	String rider_rating = alternatives.get(i).getRider_rating() +"/5"+ "\u2b50";
         	String car_model; 
         	if(alternatives.get(i).getCar_model().equals("null")) {
         		car_model = "\ud83d\ude98"; 
@@ -166,10 +177,10 @@ public class Keyboards {
         	
         	String perfect_price = alternatives.get(i).getRecommended_price() + " \u20ac";
         	
-        	String mean = (i+1) +".  "+dateHour+"     "+price+"     "+rider_rating;
+        	String mean = (i+1) +".  "+dateHour+"     "+price+"     "+ seats_left;
         	
 			if(alternatives.get(i).getSeats_left() > 0) {
-				travelsBlaBlaCar.add(new TravelBlaBlaCar(mean, rider_rating, dateHour, price, seats_left, car_model, distance, perfect_duration, perfect_price));
+				travelsBlaBlaCar.add(new TravelBlaBlaCar(mean, dateHour, price, seats_left, car_model, distance, perfect_duration, perfect_price));
 			}
 			
 		}
@@ -178,8 +189,8 @@ public class Keyboards {
 			case PRICE:
 					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.priceComparator);
 				break;
-			case RIDERRATING:
-					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.riderRatingComparator);
+			case SEATS:
+					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.seatsLeftComparator);
 				break;
 			default:
 					Collections.sort(travelsBlaBlaCar, TravelBlaBlaCar.dateHourComparator);
@@ -260,6 +271,7 @@ public class Keyboards {
 
 		keyboard.add(keyboardRowButton(ROME2RIO));
 		keyboard.add(keyboardRowButton(BLABLACAR));
+		keyboard.add(keyboardRowButton(VIAGGIATRENTO));
 
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
@@ -380,6 +392,37 @@ public class Keyboards {
 		mean = Pattern.compile("animal", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\ud83d\udc2b" + "animal"));
 		
 		return mean;
+	}
+	
+	
+	
+	//viaggiaTrento
+	public static ReplyKeyboardMarkup keyboardChooseStartViaggiaTrento(long chatId, String coorstart, String coordestination) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		List<KeyboardRow> keyboard = new ArrayList<>();
+		
+		ViaggiaTrentoAPIWrapper viaggiaTrento = new ViaggiaTrentoAPIWrapper();
+		travelsViaggiaTrento = viaggiaTrento.getViaggiaTrentoRoutes(coorstart, coordestination);
+		
+		Collections.sort(travelsViaggiaTrento, TravelViaggiaTrento.timeComparator);
+		
+		for(int i = 0;i<travelsViaggiaTrento.size();i++) {
+			int rest = Integer.parseInt(travelsViaggiaTrento.get(i).getDuration()) % 60;
+    		int hour = Integer.parseInt(travelsViaggiaTrento.get(i).getDuration()) / 60;
+    		String result ="";
+    		if(rest<10) {
+    			result += (i+1)+". "+"\u23f1"+hour+".0"+rest+"h\n";
+    		}else {
+    			result += (i+1)+". "+"\u23f1"+hour+"."+rest+"h\n";
+    		}
+    		keyboard.add(keyboardRowButton(result));
+			
+		}
+		
+		replyKeyboardMarkup.setKeyboard(keyboard);
+
+		Current.setMenu(chatId, Menu.VIAGGIATRENTODESTINATION);
+		return replyKeyboardMarkup;
 	}
 
 }

@@ -6,7 +6,6 @@ import com.google.common.base.CharMatcher;
 
 public class TravelBlaBlaCar {
 	private String mean;
-	private String rider_rating;
 	private String dateHour;
 	private String price;
 	private String seats_left;
@@ -15,11 +14,10 @@ public class TravelBlaBlaCar {
 	private String perfect_duration;
 	private String perfect_price;
 	
-	public TravelBlaBlaCar(String mean, String rider_rating, String dateHour, String price, String seats_left, String car_model,
+	public TravelBlaBlaCar(String mean, String dateHour, String price, String seats_left, String car_model,
 			String distance, String perfect_duration, String perfect_price) {
 		super();
 		this.mean = mean;
-		this.rider_rating = rider_rating;
 		this.dateHour = dateHour;
 		this.price = price;
 		this.seats_left = seats_left;
@@ -37,17 +35,6 @@ public class TravelBlaBlaCar {
 
 	public void setMean(String mean) {
 		this.mean = mean;
-	}
-
-	
-
-	public String getRider_rating() {
-		return rider_rating;
-	}
-
-
-	public void setRider_rating(String rider_rating) {
-		this.rider_rating = rider_rating;
 	}
 
 
@@ -118,11 +105,11 @@ public class TravelBlaBlaCar {
         }
     };
     
-    public static Comparator <TravelBlaBlaCar> riderRatingComparator = new Comparator<TravelBlaBlaCar>() {
+    public static Comparator <TravelBlaBlaCar> seatsLeftComparator = new Comparator<TravelBlaBlaCar>() {
 
         public int compare(TravelBlaBlaCar t1, TravelBlaBlaCar t2) {
         	
-        	int value = CharMatcher.DIGIT.retainFrom(t2.getRider_rating()).compareTo(CharMatcher.DIGIT.retainFrom(t1.getRider_rating()));
+        	int value = CharMatcher.DIGIT.retainFrom(t1.getSeats_left()).compareTo(CharMatcher.DIGIT.retainFrom(t2.getSeats_left()));
         	
         	return value;
         }

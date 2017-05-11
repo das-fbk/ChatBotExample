@@ -8,17 +8,23 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.STARTCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.RIDERRATING;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.VIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelRomeToRio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelBlaBlaCar;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseStartViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseAlternatives;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaRome2Rio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaBlaBlaCar;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardRome2RioResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardBlaBlaCarResult;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardStart;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textError;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoStart;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTrip;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoDestination;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCalculateTrip;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseRomeBla;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioResult;
@@ -42,9 +48,12 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import utils.Rome2RioAPIWrapper;
 import utils.BlaBlaCarAPIWrapper;
+import utils.GoogleAPIWrapper;
 import utils.TripAlternativeRome2Rio;
 import utils.TripAlternativeBlaBlaCar;
 import eu.trentorise.smartcampus.mobilityservice.MobilityServiceException;
+
+
 
 /**
  * Created by antbucc
@@ -213,12 +222,24 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					break;
 				
 				case SELEZIONE_SERVIZIO:
+					
 					switch(message.getText()) {
 						case ROME2RIO:
 							sendMessageDefault(message, keyboardCalcolaRome2Rio(chatId), textCalculateTrip(Current.getLanguage(chatId)));
 							break;
 						case BLABLACAR:
 							sendMessageDefault(message, keyboardCalcolaBlaBlaCar(chatId), textCalculateTrip(Current.getLanguage(chatId)));
+							break;
+						case VIAGGIATRENTO:
+							GoogleAPIWrapper google = new GoogleAPIWrapper();
+							
+							setStart(google.getGoogleAutocomplete(getStart()));
+							String coorstart = google.getCoordinates(getStart());
+							
+							setDestination(google.getGoogleAutocomplete(getDestination()));
+							String coordestination = google.getCoordinates(getDestination());
+							
+							sendMessageDefault(message, keyboardChooseStartViaggiaTrento(chatId, coorstart, coordestination), textViaggiaTrentoTrip(Current.getLanguage(chatId), getDifferentWayTravelViaggiaTrento()));
 							break;
 					}
 					break;
@@ -277,12 +298,16 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 						case PRICE:
 							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
 							break;
-						case RIDERRATING:
+						case SEATS:
 							sendMessageDefault(message,keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, message.getText()), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), message.getText()));
 							break;
 						default:
 							break;
 					}
+				break;
+				
+				case VIAGGIATRENTODESTINATION:
+					
 				break;
 	
 					
@@ -319,5 +344,6 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 			throws TelegramApiException {
 		sendMessageDefault(message, null, text);
 	}
+	
 
 }
