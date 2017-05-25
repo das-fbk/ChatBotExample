@@ -3,12 +3,12 @@ package utils;
 public class TripAlternativeRome2Rio {
 	
 	private String mean;
-	private Double price;
+	private Integer price;
 	private Double duration;
-	private Double distance;
+	private Integer distance;
 	private Integer number_changes;
 
-	public TripAlternativeRome2Rio(String mean, Double price, Double duration, Double distance, Integer number_changes) {
+	public TripAlternativeRome2Rio(String mean, Integer price, Double duration, Integer distance, Integer number_changes) {
 		super();
 		this.mean = mean;
 		this.price = price;
@@ -30,10 +30,10 @@ public class TripAlternativeRome2Rio {
 	public void setMean(String mean) {
 		this.mean = mean;
 	}
-	public Double getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 	public Double getDuration() {
@@ -42,10 +42,10 @@ public class TripAlternativeRome2Rio {
 	public void setDuration(Double duration) {
 		this.duration = duration;
 	}
-	public Double getDistance() {
+	public Integer getDistance() {
 		return distance;
 	}
-	public void setDistance(Double distance) {
+	public void setDistance(Integer distance) {
 		this.distance = distance;
 	}
 }

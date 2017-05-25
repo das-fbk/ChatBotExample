@@ -1,6 +1,7 @@
 package it.das.travelassistant.telegram.updateshandlers;
 
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.MANUAL;
+
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
@@ -16,17 +17,21 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboar
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseStartViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseAlternatives;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaRome2Rio;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardRome2RioAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaBlaBlaCar;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardRome2RioResult;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.setKeyboardJourneyOption;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardBlaBlaCarResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardStart;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textError;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoStart;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTrip;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoDestination;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCalculateTrip;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseRomeBla;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioArrive;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textBlaBlaCarResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textStart;
@@ -37,6 +42,7 @@ import it.das.travelassistant.telegram.updateshandlers.messagging.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 import org.telegram.telegrambots.TelegramApiException;
@@ -47,12 +53,12 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import utils.Rome2RioAPIWrapper;
+import utils.TravelsRomeToRioAfterChoose;
 import utils.BlaBlaCarAPIWrapper;
 import utils.GoogleAPIWrapper;
 import utils.TripAlternativeRome2Rio;
 import utils.TripAlternativeBlaBlaCar;
 import eu.trentorise.smartcampus.mobilityservice.MobilityServiceException;
-
 
 
 /**
@@ -64,9 +70,11 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 	private String proximity;
 	private String timeDeparture;
 	private String transportType;
+	private Rome2RioAPIWrapper rome2RioWrapper;
 	private ArrayList<Integer> userIDs;
 	ArrayList<TripAlternativeRome2Rio> romeToRioAlternatives;
 	ArrayList<TripAlternativeBlaBlaCar> blaBlaCarAlternatives;
+	ArrayList<TravelsRomeToRioAfterChoose> travelsRomeToRioAfterChoose;
 	String from;
 	String to;
 
@@ -211,13 +219,13 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					break;
 
 				case FROM:
-					this.setStart(message.getText());
+					this.setStart(message.getText().trim().replaceAll(" +", ""));
 					Current.setMenu(chatId, Menu.TO);
 					sendMessageDefault(message,textStartDestination(Current.getLanguage(chatId)));
 	
 					break;
 				case TO:
-					this.setDestination(message.getText());
+					this.setDestination(message.getText().trim().replaceAll(" +", ""));
 					sendMessageDefault(message, keyboardChooseAlternatives(chatId),textChooseRomeBla(Current.getLanguage(chatId)));
 					break;
 				
@@ -246,7 +254,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				case CALCOLAROME2RIO:
 						romeToRioAlternatives = new ArrayList<TripAlternativeRome2Rio>();
 	
-						Rome2RioAPIWrapper rome2RioWrapper = new Rome2RioAPIWrapper();
+						rome2RioWrapper = new Rome2RioAPIWrapper();
 
 						from = this.getStart();
 						to = this.getDestination();
@@ -286,6 +294,37 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							sendMessageDefault(message,keyboardRome2RioResult(chatId, romeToRioAlternatives, message.getText()), textRome2RioResult(Current.getLanguage(chatId), getDifferentWayTravelRomeToRio(), message.getText()));
 							break;
 						default:
+							//stringa con tutto il percorso che mi viene data da Martina
+							
+							//trento - torino
+							//String all = "Train;Trenitalia Frecce;Trento;Verona Porta Nuova*Shuttle;Azienda Trasporti Verona Srl;Verona;Verona Catullo Airport*Plane;999;Verona;Turin*Train;5T Torino;Caselle Aeroporto;Torino Dora"; 
+							
+							//trento - roma
+							//String all = "Train;Trenitalia Frecce;Trento;Roma Termini"; 
+							
+							//roma - milano
+							//String all = "Train;Trenitalia;Roma Termini;Fiumicino Aeroporto*Plane;999;Rome;Milan Linate*Bus;Milan Metro;aeroporto di linate;c.so p.ta vittoria"; 
+							
+							//trento - londra
+							//String all = "Train;Trenitalia Frecce;Trento;Verona Porta Nuova*Train;Trenitalia Frecce;Verona Porta Nuova;Milano Centrale*Train;Trenord;Milano Centrale;Malpensa Aeroporto Terminal 1*Plane;999;Milan Malpensa;London Gatwick*Train;Gatwick Express;Gatwick Airport;London Victoria";
+							
+							//londra - newyork
+							String all = "Train;Heathrow Express;London Paddington;Heathrow Terminals 1-3*Plane;999;London Heathrow;Philadelphia*Train;SEPTA;Airport Terminal A;University City*Walk;999;University City;Philadelphia 30th Street Station Amtrak*Train;Amtrak Acela Express;Philadelphia 30th Street Station Amtrak;New York Penn Station*Train;Long Island Rail Road;Penn Station;Flushing Main Street*Walk;999;Flushing Main Street;NewYork–Presbyterian/Queens"; 
+							
+							rome2RioWrapper = new Rome2RioAPIWrapper();
+							
+							from = this.getStart();
+							to = this.getDestination();
+							
+							travelsRomeToRioAfterChoose = rome2RioWrapper.getRome2RioAfterChoose(all, from, to);
+							
+							
+							for(int i = 0;i < travelsRomeToRioAfterChoose.size(); i++) {
+								travelsRomeToRioAfterChoose.get(i).setVehicle(setKeyboardJourneyOption(travelsRomeToRioAfterChoose.get(i).getVehicle()));
+							}
+							
+							sendMessageDefault(message,keyboardRome2RioAfterChoose(chatId), textRome2RioAfterChoose(Current.getLanguage(chatId), travelsRomeToRioAfterChoose.get(0)));
+							travelsRomeToRioAfterChoose.remove(0);
 							break;
 					}
 				break;
@@ -308,6 +347,15 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				
 				case VIAGGIATRENTODESTINATION:
 					
+				break;
+				
+				case ROME2RIOAFTERCHOOSE:
+					if(travelsRomeToRioAfterChoose.size() > 0) {
+						sendMessageDefault(message,keyboardRome2RioAfterChoose(chatId), textRome2RioAfterChoose(Current.getLanguage(chatId), travelsRomeToRioAfterChoose.get(0)));
+						travelsRomeToRioAfterChoose.remove(0);
+					}else{
+						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+					}
 				break;
 	
 					
@@ -337,7 +385,6 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 			sendMessage.setReplyMarkup(keyboard);
 			sendMessage(sendMessage);
 	}
-	
 	
 
 	private void sendMessageDefault(Message message, String text)

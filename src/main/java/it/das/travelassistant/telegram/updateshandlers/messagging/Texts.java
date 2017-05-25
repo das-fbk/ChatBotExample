@@ -12,6 +12,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
 import utils.TravelViaggiaTrento;
+import utils.TravelsRomeToRioAfterChoose;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -59,6 +60,36 @@ public class Texts {
     public static String  textChooseRomeBla(Language language) {
     	return getMessage("chooseBlablacarRometoRio", language.locale());
     }
+    
+    public static String  textRome2RioAfterChoose(Language language, TravelsRomeToRioAfterChoose travels) {
+    	String result = 
+    	"*"+travels.getPosition()+" LEG*\n"+
+    	"*From* "+travels.getStart()+"\n"+
+    	"*To* "+travels.getArrive()+"\n";
+    	String durationString = "";
+    	int rest = travels.getDuration().intValue() % 60;
+	int hour = travels.getDuration().intValue() / 60;
+	if(rest<10) {
+		durationString = hour+".0"+rest+" h";
+	}else {
+		durationString = hour+"."+rest+" h";
+	}
+	result+="\u23F3 "+durationString+"\n"+
+	"\u21e5 "+travels.getDistance()+" Km"+"\n";
+	if(travels.getPrice() != -1) {
+		result +="\uD83D\uDCB0 "+travels.getPrice()+" \u20ac"+"\n";
+	}
+    result +=travels.getVehicle();
+	if(!travels.getAgency().equals("999")) {
+		result+=" - "+travels.getAgency();
+	}
+    	return result;
+    }
+    
+    public static String  textRome2RioArrive(Language language) {
+    	return getMessage("rome2rioArrive", language.locale());
+    }
+    
     
     public static String  textRome2RioResult(Language language, ArrayList <TravelRome2Rio> travels, String choose) {
     	String result = getMessage("rome2riodifferentway", language.locale())+"\n";

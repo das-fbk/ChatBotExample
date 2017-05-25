@@ -10,6 +10,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NEXT;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.WALKVIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TRAINVIAGGIATRENTO;
@@ -27,6 +28,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import utils.TravelRome2Rio;
+import utils.TravelsRomeToRioAfterChoose;
 import utils.TravelViaggiaTrento;
 import utils.TravelBlaBlaCar;
 import utils.TripAlternativeRome2Rio;
@@ -42,6 +44,7 @@ public class Keyboards {
 	private static ArrayList<TravelRome2Rio> travelsRomeToRio;
 	private static ArrayList<TravelBlaBlaCar> travelsBlaBlaCar;
 	private static ArrayList<TravelViaggiaTrento> travelsViaggiaTrento;
+	private static ArrayList<TravelsRomeToRioAfterChoose> travelsRomeToRioAfterChoose;
 
 	private static ReplyKeyboardMarkup keyboard() {
 		ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -49,7 +52,7 @@ public class Keyboards {
 		replyKeyboardMarkup.setResizeKeyboard(true);
 		replyKeyboardMarkup.setOneTimeKeyboad(false);
 
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 
 
@@ -91,8 +94,8 @@ public class Keyboards {
 		for (int i = 0; i < alternatives.size(); i++) {
 			String mean = alternatives.get(i).getMean();
 			Double duration = alternatives.get(i).getDuration();
-			Double cost = alternatives.get(i).getPrice();
-			Double distance = alternatives.get(i).getDistance();
+			Integer cost = alternatives.get(i).getPrice();
+			Integer distance = alternatives.get(i).getDistance();
 			Integer numberChanges = alternatives.get(i).getNumber_changes();
 			
 			String distanceString = distance.toString() + " Km";
@@ -133,7 +136,7 @@ public class Keyboards {
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, menu);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 	
 	private static ReplyKeyboardMarkup keyboardBlaBlaCarResult(long chatId,
@@ -204,7 +207,7 @@ public class Keyboards {
         replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, menu);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 
 
@@ -220,6 +223,22 @@ public class Keyboards {
 		Current.setMenu(chatId, Menu.START);
 		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
+	
+	private static ReplyKeyboardMarkup keyboardRome2RioAfterChoose(long chatId, Menu menu) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+			
+			List<KeyboardRow> keyboard = new ArrayList<>();
+
+			keyboard.add(new KeyboardRow());
+	        keyboard.get(0).add(NEXT);
+	        
+	        replyKeyboardMarkup.setKeyboard(keyboard);
+	        
+	        Current.setMenu(chatId, menu);
+		
+		
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
 
 	
 	
@@ -227,6 +246,10 @@ public class Keyboards {
 			ArrayList<TripAlternativeRome2Rio> alternatives, String filter) {
 		return keyboardRome2RioResult(chatId, alternatives,
 				Menu.ROME2RIORESULT, filter);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardRome2RioAfterChoose(long chatId) {
+		return keyboardRome2RioAfterChoose(chatId, Menu.ROME2RIOAFTERCHOOSE);
 	}
 
 	public static ReplyKeyboardMarkup keyboardBlaBlaCarResult(long chatId,
@@ -247,7 +270,7 @@ public class Keyboards {
 
 	
 		Current.setMenu(chatId, Menu.CALCOLAROME2RIO);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 	
 	public static ReplyKeyboardMarkup keyboardCalcolaBlaBlaCar(long chatId) {
@@ -260,7 +283,7 @@ public class Keyboards {
 
 	
 		Current.setMenu(chatId, Menu.CALCOLABLABLACAR);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 	
 	
@@ -277,7 +300,7 @@ public class Keyboards {
 
 	
 		Current.setMenu(chatId, Menu.SELEZIONE_SERVIZIO);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 
 
@@ -346,6 +369,11 @@ public class Keyboards {
 		
 		mean = Pattern.compile("fly", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDEEB" + "fly"));
 		
+		//plane
+		mean = Pattern.compile("Plane", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDEEB" + "Plane"));
+										
+		mean = Pattern.compile("plane", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDEEB" + "plane"));
+		
 		//shuttle
 		mean = Pattern.compile("Shuttle", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE90" + "Shuttle"));
 		
@@ -355,6 +383,11 @@ public class Keyboards {
 		mean = Pattern.compile("Rideshare", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83C\uDFCE" + "Rideshare"));
 		
 		mean = Pattern.compile("rideshare", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83C\uDFCE" + "rideshare"));
+		
+		//walk
+		mean = Pattern.compile("Walk", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\ud83c\udfc3" + "Walk"));
+				
+		mean = Pattern.compile("walk", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\ud83c\udfc3" + "walk"));
 		
 		//eurotunnel
 		mean = Pattern.compile("Eurotunnel", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDD73" + "Eurotunnel"));
@@ -422,7 +455,7 @@ public class Keyboards {
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, Menu.VIAGGIATRENTODESTINATION);
-		return replyKeyboardMarkup;
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 
 }

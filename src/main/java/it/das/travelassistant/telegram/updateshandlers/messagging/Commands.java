@@ -17,7 +17,8 @@ public class Commands {
     
     public static final String DATEHOUR = "\ud83d\udcc5";
     public static final String SEATS = "\ud83d\udcba";
-
+    public static final String NEXT = "NEXT"+"\u27AA";
+    public static final String ARRIVE = "\uD83C\uDFC1";
     
     public static final String ROME2RIO = "ROME2RIO";
     public static final String BLABLACAR = "BLABLACAR";
