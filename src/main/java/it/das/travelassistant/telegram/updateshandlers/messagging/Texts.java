@@ -114,7 +114,7 @@ public class Texts {
 		        					"    "+travels.get(i).getNumber_changes()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     PRICE"+PRICE+"        *TIME*"+TIME+"        DISTANCE"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
+		    		result+="     PRICE"+PRICE+"        *DURATION*"+TIME+"        DISTANCE"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
 	    		break;
 	    	case CHANGES:
 		    		for(int i = 0;i<travels.size();i++) {
@@ -133,7 +133,7 @@ public class Texts {
 		        					"    "+"*"+travels.get(i).getNumber_changes()+"*"+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     PRICE"+PRICE+"        TIME"+TIME+"        DISTANCE"+DISTANCE+"        *CHANGES*"+CHANGES+"\n\n";
+		    		result+="     PRICE"+PRICE+"        DURATION"+TIME+"        DISTANCE"+DISTANCE+"        *CHANGES*"+CHANGES+"\n\n";
 	    		break;
 	    	case DISTANCE:
 		    		for(int i = 0;i<travels.size();i++) {
@@ -152,7 +152,7 @@ public class Texts {
 		        					"    "+travels.get(i).getNumber_changes()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     PRICE"+PRICE+"        TIME"+TIME+"        *DISTANCE*"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
+		    		result+="     PRICE"+PRICE+"        DURATION"+TIME+"        *DISTANCE*"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
 	    		break;
 	    	default:
 		    		for(int i = 0;i<travels.size();i++) {
@@ -171,7 +171,7 @@ public class Texts {
 		        					"    "+travels.get(i).getNumber_changes()+"\n\n";
 		        	}
 		    		result+=getMessage("rome2riosortby", language.locale())+"\n";
-		    		result+="     *PRICE*"+PRICE+"        TIME"+TIME+"        DISTANCE"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
+		    		result+="     *PRICE*"+PRICE+"        DURATION"+TIME+"        DISTANCE"+DISTANCE+"        CHANGES"+CHANGES+"\n\n";
 	    		break;
     	}
     	

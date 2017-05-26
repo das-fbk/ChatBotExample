@@ -153,7 +153,7 @@ public class Rome2RioAPIWrapper {
 					}
 					if (alternatives.size() != segments.length()) {
 						alternatives.clear();
-					}else {
+					}else{
 						break;
 					}
 				}

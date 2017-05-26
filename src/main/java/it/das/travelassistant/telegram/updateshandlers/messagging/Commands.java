@@ -10,10 +10,10 @@ public class Commands {
 
     
     // filter commands
-    public static final String PRICE = "\u0024";  // \ud83d\udcb5
-    public static final String TIME = "\u231a";
-    public static final String CHANGES = "\u25cf"+"\u25cb"+"\u25cf";
-    public static final String DISTANCE = "\u21e5";
+    public static final String PRICE = "\ud83d\udcb5";  //   "\u0024"
+    public static final String TIME = "\ud83d\udd52"; //   "\u231a"
+    public static final String CHANGES = "\ud83d\udd00"; //   "\u25cf"+"\u25cb"+"\u25cf"
+    public static final String DISTANCE = "\ud83d\udccf"; //   "\u21e5"
     
     public static final String DATEHOUR = "\ud83d\udcc5";
     public static final String SEATS = "\ud83d\udcba";
