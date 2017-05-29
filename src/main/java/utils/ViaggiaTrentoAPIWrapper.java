@@ -36,6 +36,7 @@ public class ViaggiaTrentoAPIWrapper {
 				JSONObject numbers = (JSONObject) jsonArr.get(i);
 				ArrayList <String> routes = new ArrayList <String>();
 				ArrayList <String> steps = new ArrayList <String>();
+				ArrayList <String> routeId =  new ArrayList <String>();
 				
 				JSONArray leg =  new JSONArray();
 				leg = numbers.getJSONArray("leg");
@@ -57,9 +58,11 @@ public class ViaggiaTrentoAPIWrapper {
 					String nameFrom = from.getString("name");
 					
 					if(type.equals("BUS")) {
+						routeId.add(transport.getString("routeId"));
 						String busNumber = transport.getString("routeShortName");
 						complete = "*"+busNumber+"*\n"+"          *FROM* "+nameFrom+"\n"+"          *TO* "+nameTO;
 					}else{
+						routeId.add("999");
 						complete = "\n"+"          *FROM* "+nameFrom+"\n"+"          *TO* "+nameTO;
 					}
 					
@@ -68,7 +71,7 @@ public class ViaggiaTrentoAPIWrapper {
 				}
 				
 				int minutes = (int)TimeUnit.MILLISECONDS.toMinutes(numbers.getInt("duration"));
-				alternatives.add(new TravelViaggiaTrento(""+minutes, steps,routes));
+				alternatives.add(new TravelViaggiaTrento(""+minutes, steps,routes, routeId));
 			}
 		}
 		 return alternatives;
