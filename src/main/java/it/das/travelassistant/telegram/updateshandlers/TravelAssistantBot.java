@@ -14,6 +14,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.VIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelRomeToRio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelBlaBlaCar;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardViaggiaTrentoAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseStartViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseAlternatives;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaRome2Rio;
@@ -26,6 +27,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboar
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardStart;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textError;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoStart;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiTrentoAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTrip;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoDestination;
@@ -53,7 +55,9 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import utils.Rome2RioAPIWrapper;
+import utils.ViaggiaTrentoAPIWrapper;
 import utils.TravelsRomeToRioAfterChoose;
+import utils.TravelsViaggiaTrentoAfterChoose;
 import utils.BlaBlaCarAPIWrapper;
 import utils.GoogleAPIWrapper;
 import utils.TripAlternativeRome2Rio;
@@ -75,6 +79,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 	ArrayList<TripAlternativeRome2Rio> romeToRioAlternatives;
 	ArrayList<TripAlternativeBlaBlaCar> blaBlaCarAlternatives;
 	ArrayList<TravelsRomeToRioAfterChoose> travelsRomeToRioAfterChoose;
+	ArrayList<ArrayList<TravelsViaggiaTrentoAfterChoose>> travelsViaggiaTrentoAfterChoose;
 	String from;
 	String to;
 
@@ -309,7 +314,10 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							//String all = "Train;Trenitalia Frecce;Trento;Verona Porta Nuova*Train;Trenitalia Frecce;Verona Porta Nuova;Milano Centrale*Train;Trenord;Milano Centrale;Malpensa Aeroporto Terminal 1*Plane;999;Milan Malpensa;London Gatwick*Train;Gatwick Express;Gatwick Airport;London Victoria";
 							
 							//londra - newyork
-							String all = "Train;Heathrow Express;London Paddington;Heathrow Terminals 1-3*Plane;999;London Heathrow;Philadelphia*Train;SEPTA;Airport Terminal A;University City*Walk;999;University City;Philadelphia 30th Street Station Amtrak*Train;Amtrak Acela Express;Philadelphia 30th Street Station Amtrak;New York Penn Station*Train;Long Island Rail Road;Penn Station;Flushing Main Street*Walk;999;Flushing Main Street;NewYork–Presbyterian/Queens"; 
+							//String all = "Train;Heathrow Express;London Paddington;Heathrow Terminals 1-3*Plane;999;London Heathrow;Philadelphia*Train;SEPTA;Airport Terminal A;University City*Walk;999;University City;Philadelphia 30th Street Station Amtrak*Train;Amtrak Acela Express;Philadelphia 30th Street Station Amtrak;New York Penn Station*Train;Long Island Rail Road;Penn Station;Flushing Main Street*Walk;999;Flushing Main Street;NewYork–Presbyterian/Queens"; 
+							
+							//trento - vienna
+							String all = "Train;Sudtirol Alto Adige;Trento;Bozen*Bus;Helloe;Bolzano;Vienna"; 
 							
 							rome2RioWrapper = new Rome2RioAPIWrapper();
 							
@@ -346,7 +354,58 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				break;
 				
 				case VIAGGIATRENTODESTINATION:
-					
+					if(message.getText().substring(message.getText().length() - 1).equals("h")) {
+						//stringa che mi viene data da Martina BUS;routeId;from;to
+						//Povo Piazza Manci - Verona "Big Center" autobus 13
+						//String all = "12;13R;Povo Piazza Manci;Verona \"Big Center\"";
+						
+						//Povo Piazza Manci - Piazza Dante "Dogana" autobus 5
+						//String all = "12;05R;Povo Piazza Manci;Piazza Dante \"Dogana\"";
+						
+						//Piazza Dante "Stazione Fs" - Mattarello "Torre Franca" autobus 8
+						//String all = "12;08A;Piazza Dante \"Stazione Fs\";Mattarello \"Torre Franca\"";
+						
+						//Ravina Piazza - Piazza Dante "Pal. Regione" autobus 12
+						//String all = "12;12R;Ravina Piazza;Piazza Dante \"Pal. Regione\"";
+						
+						//Ravina Piazza - Piazza Dante "Pal. Regione" autobus 12
+						//String all = "12;05R;Borino;Piazza Dante \"Dogana\"*12;08A;Piazza Dante \"Stazione Fs\";Mattarello \"Torre Franca\"";
+						
+						//Trento - rovereto
+						//String all = "999;999;sidewalk;Trento FS*5;BV_R1_G;Trento FS;Rovereto FS*999;999;Rovereto FS;Piazzale Orsi Stazione Fs*16;03A_Rov;Stazione Fs;Corso Rosmini Via Savioli*999;999;Corso Rosmini Via Savioli;Corso Antonio Rosmini";
+						
+						String all = "999;999;service road;Povo Piazza Manci*12;13R;Povo Piazza Manci;Piazza Dante \"Pal. Regione\"*999;999;Piazza Dante \"Pal. Regione\";sidewalk";
+						
+						ViaggiaTrentoAPIWrapper viaggiaTrentoAPIWrapper = new ViaggiaTrentoAPIWrapper();
+						
+						StringTokenizer stk = new StringTokenizer(all, "*");
+						travelsViaggiaTrentoAfterChoose = new ArrayList<ArrayList<TravelsViaggiaTrentoAfterChoose>> ();
+				        while (stk.hasMoreTokens()) {
+				        		ArrayList <String> help = new ArrayList <String>();
+				        		String token = stk.nextToken();
+				            StringTokenizer stk1 = new StringTokenizer(token, ";");
+				            
+				            while (stk1.hasMoreTokens()) {
+				                String token1 = stk1.nextToken();
+									help.add(token1);
+				            }
+				            if(!help.get(0).equals("999") && !help.get(1).equals("999")) {
+				            		travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
+				            } else {
+				            		//fare il caso 999 e 999 che sarebbe il walk
+				            	travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
+				            }
+				        }
+						sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
+						travelsViaggiaTrentoAfterChoose.remove(0);
+					}else{
+						if(travelsViaggiaTrentoAfterChoose.size()>0) {
+							sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
+							travelsViaggiaTrentoAfterChoose.remove(0);
+						}else{
+							sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+						}
+					}
 				break;
 				
 				case ROME2RIOAFTERCHOOSE:

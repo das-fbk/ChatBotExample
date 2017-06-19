@@ -139,6 +139,23 @@ public class Keyboards {
 		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 	
+	private static ReplyKeyboardMarkup keyboardViaggiaTrentoAfterChoose(long chatId, Menu menu) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		
+		List<KeyboardRow> keyboard = new ArrayList<>();
+
+		keyboard.add(new KeyboardRow());
+        keyboard.get(0).add(NEXT);
+        
+        replyKeyboardMarkup.setKeyboard(keyboard);
+        
+        Current.setMenu(chatId, menu);
+	
+	
+	return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+	
+	
 	private static ReplyKeyboardMarkup keyboardBlaBlaCarResult(long chatId,
 			ArrayList<TripAlternativeBlaBlaCar> alternatives, Menu menu, String filter) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
@@ -246,6 +263,10 @@ public class Keyboards {
 			ArrayList<TripAlternativeRome2Rio> alternatives, String filter) {
 		return keyboardRome2RioResult(chatId, alternatives,
 				Menu.ROME2RIORESULT, filter);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardViaggiaTrentoAfterChoose(long chatId) {
+		return keyboardViaggiaTrentoAfterChoose(chatId, Menu.VIAGGIATRENTODESTINATION);
 	}
 	
 	public static ReplyKeyboardMarkup keyboardRome2RioAfterChoose(long chatId) {

@@ -13,6 +13,7 @@ import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
 import utils.TravelViaggiaTrento;
 import utils.TravelsRomeToRioAfterChoose;
+import utils.TravelsViaggiaTrentoAfterChoose;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -59,6 +60,34 @@ public class Texts {
     }
     public static String  textChooseRomeBla(Language language) {
     	return getMessage("chooseBlablacarRometoRio", language.locale());
+    }
+    
+    public static String  textViaggiTrentoAfterChoose(Language language, ArrayList<TravelsViaggiaTrentoAfterChoose> travels) {
+    		//problema con i treni nella visualizzazione
+	    	String result = "";
+	    	String help = "99";
+	    	for(int i = 0;i<travels.size();i++) {
+	    		if(travels.get(i).getBusNumber().equals("999") && travels.get(i).getHours().equals("999")) {
+	    			result += "*Walk*\n";
+	    			result+="    From: *"+travels.get(i).getFrom()+"*\n";
+	    			result+="    To: *"+travels.get(i).getTo()+"*\n\n";
+	    		}else{
+	    			if(i == 0) {
+		    			result += "*"+travels.get(i).getBusNumber()+"* bus route\n";
+		    			result+="    From: *"+travels.get(i).getFrom()+"*\n";
+		    			result+="    To: *"+travels.get(i).getTo()+"*\n\n";
+		    			result+="Timetable";
+		    		}
+		    		if(!travels.get(i).getHours().substring(0, 2).equals(help)) {
+		    			help = travels.get(i).getHours().substring(0, 2);
+		    			result+="\n*"+help+"*    "+travels.get(i).getHours().substring(3, 5)+"'";
+		    		}else{
+		    			result+="  "+travels.get(i).getHours().substring(3,5)+"'";
+		    		}
+	    		}
+	    		
+	    	}
+	    	return result;
     }
     
     public static String  textRome2RioAfterChoose(Language language, TravelsRomeToRioAfterChoose travels) {

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: michael
+Built-By: michaeldolzani
 Class-Path: TelegramBots-v2.3.3.4.jar jersey-container-grizzly2-http-2
  .23.jar javax.inject-2.4.0-b34.jar grizzly-http-server-2.3.23.jar gri
  zzly-http-2.3.23.jar grizzly-framework-2.3.23.jar jersey-common-2.23.
@@ -23,7 +23,7 @@ Class-Path: TelegramBots-v2.3.3.4.jar jersey-container-grizzly2-http-2
  .2.jar mobilityservice.client-1.1.5.jar smartcampus.client.commons-2.
  0.1.jar jackson-mapper-lgpl-1.9.4.jar jackson-core-lgpl-1.9.4.jar sma
  rtplanner-beans-1.1.12.jar commons-lang-2.5.jar guava-19.0.jar
-Build-Jdk: 1.8.0_121
+Build-Jdk: 1.8.0_131
 Created-By: Maven Integration for Eclipse
 Main-Class: it.smartcommunitylab.viaggia.telegram.Main
 

@@ -9,13 +9,15 @@ public class TravelViaggiaTrento {
 	ArrayList <String> steps;
 	ArrayList <String> routes;
 	ArrayList <String> routeId;
+	ArrayList <String> agencyId;
 	
-	public TravelViaggiaTrento(String duration, ArrayList <String> steps, ArrayList <String> routes, ArrayList <String> routeId) {
+	public TravelViaggiaTrento(String duration, ArrayList <String> steps, ArrayList <String> routes, ArrayList <String> routeId, ArrayList <String> agencyId) {
 		super();
 		this.duration = duration;
 		this.steps = steps;
 		this.routes = routes;
 		this.routeId = routeId;
+		this.agencyId = agencyId;
 	}
 
 	public String getDuration() {
@@ -49,6 +51,15 @@ public class TravelViaggiaTrento {
 	public void setRouteId(ArrayList <String> routeId) {
 		this.routeId = routeId;
 	}
+	
+	public ArrayList<String> getAgencyId() {
+		return agencyId;
+	}
+
+	public void setAgencyId(ArrayList<String> agencyId) {
+		this.agencyId = agencyId;
+	}
+
 
 
 
