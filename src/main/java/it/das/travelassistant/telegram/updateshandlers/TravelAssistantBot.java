@@ -7,8 +7,10 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.STARTCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PARKING;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.VIAGGIATRENTO;
@@ -26,12 +28,12 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboar
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardStart;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textError;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoStart;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiTrentoAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTrip;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseViaggiaTrentoDestination;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textParking;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCalculateTrip;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCityBike;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseRomeBla;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioArrive;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioResult;
@@ -57,10 +59,14 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import utils.Rome2RioAPIWrapper;
 import utils.ViaggiaTrentoAPIWrapper;
 import utils.TravelsRomeToRioAfterChoose;
+import utils.CityBikeAPIWrapper;
+import utils.CityBike;
 import utils.TravelsViaggiaTrentoAfterChoose;
 import utils.BlaBlaCarAPIWrapper;
 import utils.GoogleAPIWrapper;
 import utils.TripAlternativeRome2Rio;
+import utils.ParkingAPIWrapper;
+import utils.ParkingTrentoRovereto;
 import utils.TripAlternativeBlaBlaCar;
 import eu.trentorise.smartcampus.mobilityservice.MobilityServiceException;
 
@@ -231,7 +237,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					break;
 				case TO:
 					this.setDestination(message.getText().trim().replaceAll(" +", ""));
-					sendMessageDefault(message, keyboardChooseAlternatives(chatId),textChooseRomeBla(Current.getLanguage(chatId)));
+					sendMessageDefault(message, keyboardChooseAlternatives(chatId, getStart().toLowerCase()),textChooseRomeBla(Current.getLanguage(chatId)));
 					break;
 				
 				case SELEZIONE_SERVIZIO:
@@ -253,6 +259,25 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							String coordestination = google.getCoordinates(getDestination());
 							
 							sendMessageDefault(message, keyboardChooseStartViaggiaTrento(chatId, coorstart, coordestination), textViaggiaTrentoTrip(Current.getLanguage(chatId), getDifferentWayTravelViaggiaTrento()));
+							break;
+						case BIKE:
+							CityBikeAPIWrapper citybike = new CityBikeAPIWrapper();
+							ArrayList <CityBike> city = new ArrayList <CityBike>();
+							city = citybike.getCityBikeAlternatives(getStart());
+							sendMessageDefault(message, textCityBike(Current.getLanguage(chatId), city, getStart()));
+							break;
+						case PARKING:
+							ParkingAPIWrapper parking = new ParkingAPIWrapper();
+							ArrayList <ParkingTrentoRovereto> park = new ArrayList <ParkingTrentoRovereto>();
+							String help = "";
+							if(getStart().toLowerCase().equals("trento")){
+								help = "COMUNE_DI_TRENTO";
+							}else if(getStart().toLowerCase().equals("rovereto")){
+								help = "COMUNE_DI_ROVERETO";
+							}
+							park = parking.getParkingAlternatives(help);
+							
+							sendMessageDefault(message, textParking(Current.getLanguage(chatId), park, getStart()));
 							break;
 					}
 					break;
@@ -372,9 +397,9 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 						//String all = "12;05R;Borino;Piazza Dante \"Dogana\"*12;08A;Piazza Dante \"Stazione Fs\";Mattarello \"Torre Franca\"";
 						
 						//Trento - rovereto
-						//String all = "999;999;sidewalk;Trento FS*5;BV_R1_G;Trento FS;Rovereto FS*999;999;Rovereto FS;Piazzale Orsi Stazione Fs*16;03A_Rov;Stazione Fs;Corso Rosmini Via Savioli*999;999;Corso Rosmini Via Savioli;Corso Antonio Rosmini";
+						String all = "999;999;sidewalk;Trento FS*5;BV_R1_G;Trento FS;Rovereto FS*999;999;Rovereto FS;Piazzale Orsi Stazione Fs*16;03A_Rov;Stazione Fs;Corso Rosmini Via Savioli*999;999;Corso Rosmini Via Savioli;Corso Antonio Rosmini";
 						
-						String all = "999;999;service road;Povo Piazza Manci*12;13R;Povo Piazza Manci;Piazza Dante \"Pal. Regione\"*999;999;Piazza Dante \"Pal. Regione\";sidewalk";
+						//String all = "999;999;service road;Povo Piazza Manci*12;13R;Povo Piazza Manci;Piazza Dante \"Pal. Regione\"*999;999;Piazza Dante \"Pal. Regione\";sidewalk";
 						
 						ViaggiaTrentoAPIWrapper viaggiaTrentoAPIWrapper = new ViaggiaTrentoAPIWrapper();
 						
@@ -390,9 +415,8 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 									help.add(token1);
 				            }
 				            if(!help.get(0).equals("999") && !help.get(1).equals("999")) {
-				            		travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
+				            	travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
 				            } else {
-				            		//fare il caso 999 e 999 che sarebbe il walk
 				            	travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
 				            }
 				        }

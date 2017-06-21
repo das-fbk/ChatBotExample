@@ -11,8 +11,10 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import utils.TravelRome2Rio;
 import utils.TravelBlaBlaCar;
+import utils.CityBike;
 import utils.TravelViaggiaTrento;
 import utils.TravelsRomeToRioAfterChoose;
+import utils.ParkingTrentoRovereto;
 import utils.TravelsViaggiaTrentoAfterChoose;
 
 import java.text.MessageFormat;
@@ -62,8 +64,53 @@ public class Texts {
     	return getMessage("chooseBlablacarRometoRio", language.locale());
     }
     
+    public static String  textCityBike(Language language, ArrayList<CityBike> citybike, String partenza) {
+		String result = "";
+		result+="\ud83d\udeb2 Bike sharing in *"+ partenza+"*\n";
+		result+="       \ud83d\udd35 = bikes available\n";
+		
+    	for(int i = 0;i<citybike.size();i++){
+    		result+="\n";
+    		if(citybike.get(i).getName().equals(citybike.get(i).getStreet())){
+    			result+="     *"+(i+1)+".* "+citybike.get(i).getName()+"\n";
+    		}else{
+    			result+="     *"+(i+1)+".* "+citybike.get(i).getName()+", "+citybike.get(i).getStreet()+"\n";
+    		}
+    		
+    		result+="            *Tot.* "+(citybike.get(i).getEmpty()+citybike.get(i).getFree())+" \ud83d\udeb2\n";
+    		result+="            \ud83d\udd35 "+citybike.get(i).getFree()+" \ud83d\udeb2\n";
+    		  
+    		    
+    	}
+    	return result;
+    }
+    
+    public static String  textParking(Language language, ArrayList<ParkingTrentoRovereto> park, String partenza) {
+		String result = "";
+		result+="*P* Parking in *"+ partenza+"*\n";
+		result+="       \ud83d\udd35 = parkings available\n";
+		
+    	for(int i = 0;i<park.size();i++){
+    		result+="\n";
+    		if(park.get(i).getName().equals(park.get(i).getDescription())){
+    			result+="     *"+(i+1)+".* "+park.get(i).getName()+"\n";
+    		}else{
+    			result+="     *"+(i+1)+".* "+park.get(i).getName()+", "+park.get(i).getDescription()+"\n";
+    		}
+    		result+="            *Tot.* "+park.get(i).getTotal()+" *P*\n";
+    		if(park.get(i).getMonitored() == false){
+    			result+="            \ud83d\udeab This information is not available\n";
+    		}else{
+    			result+="            \ud83d\udd35 "+park.get(i).getAvailable()+" *P*\n";
+    		}
+    		
+    		  
+    		    
+    	}
+    	return result;
+    }
+    
     public static String  textViaggiTrentoAfterChoose(Language language, ArrayList<TravelsViaggiaTrentoAfterChoose> travels) {
-    		//problema con i treni nella visualizzazione
 	    	String result = "";
 	    	String help = "99";
 	    	for(int i = 0;i<travels.size();i++) {
@@ -208,7 +255,7 @@ public class Texts {
     		result+=getMessage("rome2rioresult", language.locale());
     	return result;
     }
-    
+  
     
     public static String  textBlaBlaCarResult(Language language, ArrayList <TravelBlaBlaCar> travels, String choose) {
     	String result = getMessage("blablacarbestway", language.locale())+"\n";

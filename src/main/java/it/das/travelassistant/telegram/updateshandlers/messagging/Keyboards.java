@@ -7,14 +7,13 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.MANUAL;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NEXT;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.WALKVIAGGIATRENTO;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TRAINVIAGGIATRENTO;
-import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BUSVIAGGIATRENTO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PARKING;
 
 import utils.ViaggiaTrentoAPIWrapper;
 
@@ -309,13 +308,17 @@ public class Keyboards {
 	
 	
 	
-	public static ReplyKeyboardMarkup keyboardChooseAlternatives(long chatId) {
+	public static ReplyKeyboardMarkup keyboardChooseAlternatives(long chatId, String partenza) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
 		List<KeyboardRow> keyboard = new ArrayList<>();
 
 		keyboard.add(keyboardRowButton(ROME2RIO));
 		keyboard.add(keyboardRowButton(BLABLACAR));
 		keyboard.add(keyboardRowButton(VIAGGIATRENTO));
+		keyboard.add(keyboardRowButton(BIKE));
+		if(partenza.equals("trento") || partenza.equals("rovereto")){
+			keyboard.add(keyboardRowButton(PARKING));
+		}
 
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
