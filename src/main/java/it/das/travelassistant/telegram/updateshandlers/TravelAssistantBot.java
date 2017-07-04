@@ -10,6 +10,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.STARTCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.LONDON;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PARKING;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
@@ -17,6 +18,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelRomeToRio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelBlaBlaCar;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardViaggiaTrentoAfterChoose;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardLondonAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseStartViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseAlternatives;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaRome2Rio;
@@ -24,6 +26,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboar
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaBlaBlaCar;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardRome2RioResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.setKeyboardJourneyOption;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardLondonResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardBlaBlaCarResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardStart;
@@ -31,7 +34,9 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.t
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiTrentoAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTrip;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textLondonResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textParking;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textLondonAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCalculateTrip;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCityBike;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseRomeBla;
@@ -57,14 +62,17 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import utils.Rome2RioAPIWrapper;
+import utils.LondonAPIWrapper;
 import utils.ViaggiaTrentoAPIWrapper;
 import utils.TravelsRomeToRioAfterChoose;
+import utils.TravelsLondonAfterChoose;
 import utils.CityBikeAPIWrapper;
 import utils.CityBike;
 import utils.TravelsViaggiaTrentoAfterChoose;
 import utils.BlaBlaCarAPIWrapper;
 import utils.GoogleAPIWrapper;
 import utils.TripAlternativeRome2Rio;
+import utils.TripAlternativeLondon;
 import utils.ParkingAPIWrapper;
 import utils.ParkingTrentoRovereto;
 import utils.TripAlternativeBlaBlaCar;
@@ -81,10 +89,13 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 	private String timeDeparture;
 	private String transportType;
 	private Rome2RioAPIWrapper rome2RioWrapper;
+	private LondonAPIWrapper londonWrapper;
 	private ArrayList<Integer> userIDs;
 	ArrayList<TripAlternativeRome2Rio> romeToRioAlternatives;
+	ArrayList<TripAlternativeLondon> londonAlternatives;
 	ArrayList<TripAlternativeBlaBlaCar> blaBlaCarAlternatives;
 	ArrayList<TravelsRomeToRioAfterChoose> travelsRomeToRioAfterChoose;
+	ArrayList<TravelsLondonAfterChoose> travelsLondonAfterChoose;
 	ArrayList<ArrayList<TravelsViaggiaTrentoAfterChoose>> travelsViaggiaTrentoAfterChoose;
 	String from;
 	String to;
@@ -237,17 +248,39 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					break;
 				case TO:
 					this.setDestination(message.getText().trim().replaceAll(" +", ""));
-					sendMessageDefault(message, keyboardChooseAlternatives(chatId, getStart().toLowerCase()),textChooseRomeBla(Current.getLanguage(chatId)));
+					sendMessageDefault(message, keyboardChooseAlternatives(chatId, getStart().toLowerCase(), getDestination().toLowerCase()),textChooseRomeBla(Current.getLanguage(chatId)));
 					break;
 				
 				case SELEZIONE_SERVIZIO:
 					
 					switch(message.getText()) {
 						case ROME2RIO:
-							sendMessageDefault(message, keyboardCalcolaRome2Rio(chatId), textCalculateTrip(Current.getLanguage(chatId)));
+							romeToRioAlternatives = new ArrayList<TripAlternativeRome2Rio>();
+							
+							rome2RioWrapper = new Rome2RioAPIWrapper();
+
+							from = this.getStart();
+							to = this.getDestination();
+							
+							romeToRioAlternatives = rome2RioWrapper.getRome2RioAlternatives(from, to);
+		
+							if (romeToRioAlternatives.size() != 0) {
+								sendMessageDefault(message,keyboardRome2RioResult(chatId, romeToRioAlternatives, "NULL"), textRome2RioResult(Current.getLanguage(chatId), getDifferentWayTravelRomeToRio(), ""));
+							}
 							break;
 						case BLABLACAR:
-							sendMessageDefault(message, keyboardCalcolaBlaBlaCar(chatId), textCalculateTrip(Current.getLanguage(chatId)));
+							 blaBlaCarAlternatives = new ArrayList<TripAlternativeBlaBlaCar>();
+							 
+							 BlaBlaCarAPIWrapper blaBlaCarWrapper = new BlaBlaCarAPIWrapper();
+							 
+							 from = this.getStart();
+							 to = this.getDestination();
+							 
+							 blaBlaCarAlternatives = blaBlaCarWrapper.getBlaBlaCarAlternatives(from, to);
+							 
+							 if (blaBlaCarAlternatives.size() != 0) {
+								 sendMessageDefault(message, keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, "NULL"), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), ""));
+							}
 							break;
 						case VIAGGIATRENTO:
 							GoogleAPIWrapper google = new GoogleAPIWrapper();
@@ -279,35 +312,21 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							
 							sendMessageDefault(message, textParking(Current.getLanguage(chatId), park, getStart()));
 							break;
+						case LONDON:
+							londonAlternatives = new ArrayList<TripAlternativeLondon>();
+							
+							londonWrapper = new LondonAPIWrapper();
+							
+							from = this.getStart();
+							to = this.getDestination();
+							
+							londonAlternatives = londonWrapper.getLondonAlternatives(from, to);
+							if (londonAlternatives.size() != 0) {
+								sendMessageDefault(message,keyboardLondonResult(chatId, londonAlternatives, "NULL"), textLondonResult(Current.getLanguage(chatId), londonAlternatives, ""));
+							}
+							break;
 					}
 					break;
-				case CALCOLAROME2RIO:
-						romeToRioAlternatives = new ArrayList<TripAlternativeRome2Rio>();
-	
-						rome2RioWrapper = new Rome2RioAPIWrapper();
-
-						from = this.getStart();
-						to = this.getDestination();
-						romeToRioAlternatives = rome2RioWrapper.getRome2RioAlternatives(from, to);
-	
-						if (romeToRioAlternatives.size() != 0) {
-							sendMessageDefault(message,keyboardRome2RioResult(chatId, romeToRioAlternatives, "NULL"), textRome2RioResult(Current.getLanguage(chatId), getDifferentWayTravelRomeToRio(), ""));
-						}
-					break;
-				case CALCOLABLABLACAR:
-					 blaBlaCarAlternatives = new ArrayList<TripAlternativeBlaBlaCar>();
-					 
-					 BlaBlaCarAPIWrapper blaBlaCarWrapper = new BlaBlaCarAPIWrapper();
-					 
-					 from = this.getStart();
-					 to = this.getDestination();
-					 blaBlaCarAlternatives = blaBlaCarWrapper.getBlaBlaCarAlternatives(from, to);
-					 
-					 if (blaBlaCarAlternatives.size() != 0) {
-						 sendMessageDefault(message, keyboardBlaBlaCarResult(chatId, blaBlaCarAlternatives, "NULL"), textBlaBlaCarResult(Current.getLanguage(chatId), getDifferentWayTravelBlaBlaCar(), ""));
-					}
-					 
-				break;
 				
 				case ROME2RIORESULT:
 					switch(message.getText()) {
@@ -360,7 +379,36 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							travelsRomeToRioAfterChoose.remove(0);
 							break;
 					}
-				break;
+					break;
+				case LONDONRESULT:
+					switch(message.getText()) {
+						case TIME:
+							sendMessageDefault(message,keyboardLondonResult(chatId, londonAlternatives, message.getText()), textLondonResult(Current.getLanguage(chatId), londonAlternatives, message.getText()));
+							break;
+						case CHANGES:
+							sendMessageDefault(message,keyboardLondonResult(chatId, londonAlternatives, message.getText()),  textLondonResult(Current.getLanguage(chatId), londonAlternatives, message.getText()));
+							break;
+						default:
+							
+							//String all = "walking;SE15 1AA;Peckham Rye Station*national-rail;Peckham Rye Station;Kentish Town Station*walking;Kentish Town Station;NW5 1AA";
+							String all = "walking;SE15 1AA;Peckham Library*bus;Peckham Library;Elephant & Castle / New Kent Road*walking;Elephant & Castle / New Kent Road;Elephant & Castle Rail Station*national-rail;Elephant & Castle Rail Station;Kentish Town Station*walking;Kentish Town Station;NW5 1AA";
+							londonWrapper = new LondonAPIWrapper();
+							
+							from = this.getStart();
+							to = this.getDestination();
+							
+							travelsLondonAfterChoose = londonWrapper.getLondonAfterChoose(all, from, to);
+							
+							for(int i = 0;i < travelsLondonAfterChoose.size(); i++) {
+								travelsLondonAfterChoose.get(i).setVehicle(setKeyboardJourneyOption(travelsLondonAfterChoose.get(i).getVehicle()));
+							}
+							
+							sendMessageDefault(message,keyboardLondonAfterChoose(chatId), textLondonAfterChoose(Current.getLanguage(chatId), travelsLondonAfterChoose.get(0)));
+							travelsLondonAfterChoose.remove(0);
+							
+							break;		
+					}
+					break;
 				
 				case BLABLACARRESULT:
 					switch(message.getText()) {
@@ -436,6 +484,15 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					if(travelsRomeToRioAfterChoose.size() > 0) {
 						sendMessageDefault(message,keyboardRome2RioAfterChoose(chatId), textRome2RioAfterChoose(Current.getLanguage(chatId), travelsRomeToRioAfterChoose.get(0)));
 						travelsRomeToRioAfterChoose.remove(0);
+					}else{
+						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+					}
+				break;
+				
+				case LONDONAFTERCHOOSE:
+					if(travelsLondonAfterChoose.size() > 0) {
+						sendMessageDefault(message,keyboardLondonAfterChoose(chatId), textLondonAfterChoose(Current.getLanguage(chatId), travelsLondonAfterChoose.get(0)));
+						travelsLondonAfterChoose.remove(0);
 					}else{
 						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
 					}

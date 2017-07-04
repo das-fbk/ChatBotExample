@@ -10,6 +10,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.LONDON;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NEXT;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
@@ -29,6 +30,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import utils.TravelRome2Rio;
 import utils.TravelsRomeToRioAfterChoose;
 import utils.TravelViaggiaTrento;
+import utils.TripAlternativeLondon;
 import utils.TravelBlaBlaCar;
 import utils.TripAlternativeRome2Rio;
 import utils.TripAlternativeBlaBlaCar;
@@ -129,6 +131,49 @@ public class Keyboards {
 
 		for (int i = 0; i < travelsRomeToRio.size(); i++) {
 			keyboard.add(keyboardRowButton(travelsRomeToRio.get(i).getMean()));
+		}
+		
+		
+		replyKeyboardMarkup.setKeyboard(keyboard);
+
+		Current.setMenu(chatId, menu);
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+	
+	private static ReplyKeyboardMarkup keyboardLondonResult(long chatId,
+			ArrayList<TripAlternativeLondon> alternatives, Menu menu, String filter) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		List<KeyboardRow> keyboard = new ArrayList<>();
+
+		keyboard.add(new KeyboardRow());
+        keyboard.get(0).add(TIME);
+        keyboard.get(0).add(CHANGES);
+        
+		switch(filter) {
+			case CHANGES:
+					Collections.sort(alternatives, TripAlternativeLondon.changesComparator);
+				break;
+			default:
+					Collections.sort(alternatives, TripAlternativeLondon.timeComparator);
+				break;
+		}
+
+		for (int i = 0; i < alternatives.size(); i++) {
+			String durationString = "";
+	    	int rest = alternatives.get(i).getDuration().intValue() % 60;
+			int hour = alternatives.get(i).getDuration().intValue() / 60;
+			if(rest<10) {
+				durationString = hour+".0"+rest+" h";
+			}else {
+				durationString = hour+"."+rest+" h";
+			}
+			String shangesString = alternatives.get(i).getNumber_changes().toString();
+			if(alternatives.get(i).getNumber_changes() == 1) {
+				shangesString+=" change";
+			}else {
+				shangesString+=" changes";
+			}
+			keyboard.add(keyboardRowButton(alternatives.get(i).getMean().substring(0, (alternatives.get(i).getMean().indexOf("."))+1)+"     "+durationString+" - "+shangesString));
 		}
 		
 		
@@ -255,6 +300,22 @@ public class Keyboards {
 		
 		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
+	
+	private static ReplyKeyboardMarkup keyboardLondonAfterChoose(long chatId, Menu menu) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+			
+			List<KeyboardRow> keyboard = new ArrayList<>();
+
+			keyboard.add(new KeyboardRow());
+	        keyboard.get(0).add(NEXT);
+	        
+	        replyKeyboardMarkup.setKeyboard(keyboard);
+	        
+	        Current.setMenu(chatId, menu);
+		
+		
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
 
 	
 	
@@ -264,12 +325,22 @@ public class Keyboards {
 				Menu.ROME2RIORESULT, filter);
 	}
 	
+	public static ReplyKeyboardMarkup keyboardLondonResult(long chatId,
+			ArrayList<TripAlternativeLondon> alternatives, String filter) {
+		return keyboardLondonResult(chatId, alternatives,
+				Menu.LONDONRESULT, filter);
+	}
+	
 	public static ReplyKeyboardMarkup keyboardViaggiaTrentoAfterChoose(long chatId) {
 		return keyboardViaggiaTrentoAfterChoose(chatId, Menu.VIAGGIATRENTODESTINATION);
 	}
 	
 	public static ReplyKeyboardMarkup keyboardRome2RioAfterChoose(long chatId) {
 		return keyboardRome2RioAfterChoose(chatId, Menu.ROME2RIOAFTERCHOOSE);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardLondonAfterChoose(long chatId) {
+		return keyboardLondonAfterChoose(chatId, Menu.LONDONAFTERCHOOSE);
 	}
 
 	public static ReplyKeyboardMarkup keyboardBlaBlaCarResult(long chatId,
@@ -308,16 +379,34 @@ public class Keyboards {
 	
 	
 	
-	public static ReplyKeyboardMarkup keyboardChooseAlternatives(long chatId, String partenza) {
+	public static ReplyKeyboardMarkup keyboardChooseAlternatives(long chatId, String partenza, String destinazione) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
 		List<KeyboardRow> keyboard = new ArrayList<>();
 
-		keyboard.add(keyboardRowButton(ROME2RIO));
-		keyboard.add(keyboardRowButton(BLABLACAR));
-		keyboard.add(keyboardRowButton(VIAGGIATRENTO));
-		keyboard.add(keyboardRowButton(BIKE));
-		if(partenza.equals("trento") || partenza.equals("rovereto")){
-			keyboard.add(keyboardRowButton(PARKING));
+		
+		if(partenza.matches("^[a-z]{2}\\d{1}[a-z]{1}\\d{1}[a-z]{2}") ||
+			partenza.matches("^[a-z]{1}\\d{1}[a-z]{1}\\d{1}[a-z]{2}") ||
+			partenza.matches("^[a-z]{1}\\d{2}[a-z]{2}") ||
+			partenza.matches("^[a-z]{1}\\d{3}[a-z]{2}") ||
+			partenza.matches("^[a-z]{2}\\d{2}[a-z]{2}") ||
+			partenza.matches("^[a-z]{2}\\d{3}[a-z]{2}")){
+			
+			if(destinazione.matches("^[a-z]{2}\\d{1}[a-z]{1}\\d{1}[a-z]{2}") ||
+					destinazione.matches("^[a-z]{1}\\d{1}[a-z]{1}\\d{1}[a-z]{2}") ||
+					destinazione.matches("^[a-z]{1}\\d{2}[a-z]{2}") ||
+					destinazione.matches("^[a-z]{1}\\d{3}[a-z]{2}") ||
+					destinazione.matches("^[a-z]{2}\\d{2}[a-z]{2}") ||
+					destinazione.matches("^[a-z]{2}\\d{3}[a-z]{2}")){
+				keyboard.add(keyboardRowButton(LONDON));
+			}
+		}else{
+			keyboard.add(keyboardRowButton(ROME2RIO));
+			keyboard.add(keyboardRowButton(BLABLACAR));
+			keyboard.add(keyboardRowButton(VIAGGIATRENTO));
+			keyboard.add(keyboardRowButton(BIKE));
+			if(partenza.equals("trento") || partenza.equals("rovereto")){
+				keyboard.add(keyboardRowButton(PARKING));
+			}
 		}
 
 		replyKeyboardMarkup.setKeyboard(keyboard);
@@ -377,6 +466,11 @@ public class Keyboards {
 		mean = Pattern.compile("Drive", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE98" + "Drive"));
 		
 		mean = Pattern.compile("drive", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE98" + "drive"));
+		
+		//national-rail
+		mean = Pattern.compile("National-rail", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\uD83D\uDE84" + "National-rail"));
+		
+		mean = Pattern.compile("national-rail", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("\uD83D\uDE84" + "national-rail"));
 		
 		//car ferry
 		mean = Pattern.compile("Car_ferr", Pattern.LITERAL).matcher(mean).replaceFirst(Matcher.quoteReplacement("\u26F4" + "Car ferry"));

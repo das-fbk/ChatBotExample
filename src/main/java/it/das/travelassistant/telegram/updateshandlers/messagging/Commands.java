@@ -25,6 +25,7 @@ public class Commands {
     public static final String VIAGGIATRENTO = "VIAGGIATRENTO";
     public static final String BIKE = "BIKE";
     public static final String PARKING = "PARKING";
+    public static final String LONDON = "LONDON";
     
     public static final String WALKVIAGGIATRENTO = "\ud83c\udfc3";
     public static final String TRAINVIAGGIATRENTO = "\ud83d\ude82";
