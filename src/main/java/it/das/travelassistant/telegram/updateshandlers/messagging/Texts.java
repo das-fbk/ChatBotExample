@@ -1,6 +1,8 @@
 package it.das.travelassistant.telegram.updateshandlers.messagging;
 
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKEVIAGGIATRENTO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CARVIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BUSVIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
@@ -414,12 +416,17 @@ public class Texts {
     		}
     		
     		for(int j =0;j<travels.get(i).getRoutes().size();j++) {
+    			System.out.println("============ "+travels.get(i).getSteps().get(j));
     			if(travels.get(i).getSteps().get(j).equals("BUS")) {
     				result += "    "+BUSVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
 				}else if(travels.get(i).getSteps().get(j).equals("TRAIN")) {
 					result += "    "+TRAINVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
-				}else{
+				}else if(travels.get(i).getSteps().get(j).equals("BICYCLE")){
+					result += "    "+BIKEVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
+				}else if(travels.get(i).getSteps().get(j).equals("WALK")){
 					result += "    "+WALKVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
+				}else if(travels.get(i).getSteps().get(j).equals("CAR")){
+					result += "    "+CARVIAGGIATRENTO+travels.get(i).getSteps().get(j)+" "+travels.get(i).getRoutes().get(j)+"\n";
 				}
     			
     		}
@@ -427,6 +434,33 @@ public class Texts {
     	}
     	result+="\n";
     	result+=getMessage("rome2rioresult", language.locale());
+    	return result;
+    }
+    
+    public static String  textViaggiaTrentoYesNo(Language language) {
+    	String result ="*Do you wanna personalize your trip?*\n";
+    	
+    	return result;
+    }
+    
+    public static String  textViaggiaTrentoRouteType(Language language) {
+    	String result ="*Choose one of the following RouteType alternatives*\n";
+    	
+    	return result;
+    }
+    public static String  textViaggiaTrentoTransportType(Language language) {
+    	String result ="*Legend*\n\n";
+    	result+="*TRANSIT* = Public transport\n";
+    	result+="*SHAREDBIKE* = Bicycle with a constraint to move between bike sharing points\n";
+    	result+="*SHAREDBIKE_WITHOUT_STATION* = Shared bicycle with a constraint to move from a bike sharing point\n";
+    	result+="*CARWITHPARKING* = Private car with a constraint to move to a parking close to destination\n";
+    	result+="*SHAREDCAR* = Shared car with a constraint to move between car sharing points\n";
+    	result+="*SHAREDCAR_WITHOUT_STATION* = Shared car with a constraint to move from a car sharing point\n";
+    	result+="*BUS* = Public bus\n";
+    	result+="*TRAIN* = Trains\n";
+    	result+="*WALK* = Pedestrian walk\n\n";
+    	result+="*Choose one of the following TransportType alternatives*\n";
+    	
     	return result;
     }
 

@@ -7,6 +7,8 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.MANUAL;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.YES;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
@@ -548,12 +550,12 @@ public class Keyboards {
 	
 	
 	//viaggiaTrento
-	public static ReplyKeyboardMarkup keyboardChooseStartViaggiaTrento(long chatId, String coorstart, String coordestination) {
+	public static ReplyKeyboardMarkup keyboardChooseStartViaggiaTrento(long chatId, String coorstart, String coordestination, String routeType, String transportType) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
 		List<KeyboardRow> keyboard = new ArrayList<>();
 		
 		ViaggiaTrentoAPIWrapper viaggiaTrento = new ViaggiaTrentoAPIWrapper();
-		travelsViaggiaTrento = viaggiaTrento.getViaggiaTrentoRoutes(coorstart, coordestination);
+		travelsViaggiaTrento = viaggiaTrento.getViaggiaTrentoRoutes(coorstart, coordestination, routeType, transportType);
 		
 		Collections.sort(travelsViaggiaTrento, TravelViaggiaTrento.timeComparator);
 		
@@ -573,6 +575,55 @@ public class Keyboards {
 		replyKeyboardMarkup.setKeyboard(keyboard);
 
 		Current.setMenu(chatId, Menu.VIAGGIATRENTODESTINATION);
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+
+	public static ReplyKeyboardMarkup keyboardChooseViaggiaTrentoYesNo(long chatId) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		List<KeyboardRow> keyboard = new ArrayList<>();
+		
+		keyboard.add(keyboardRowButton(YES));
+		keyboard.add(keyboardRowButton(NO));
+		
+		replyKeyboardMarkup.setKeyboard(keyboard);
+	
+		Current.setMenu(chatId, Menu.VIAGGIATRENTOSINO);
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardChooseViaggiaTrentoRouteType(long chatId) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		List<KeyboardRow> keyboard = new ArrayList<>();
+		
+		keyboard.add(keyboardRowButton("fastest".toUpperCase()));
+		keyboard.add(keyboardRowButton("healthy".toUpperCase()));
+		keyboard.add(keyboardRowButton("leastWalking".toUpperCase()));
+		keyboard.add(keyboardRowButton("leastChanges".toUpperCase()));
+		keyboard.add(keyboardRowButton("greenest".toUpperCase()));
+		
+		replyKeyboardMarkup.setKeyboard(keyboard);
+	
+		Current.setMenu(chatId, Menu.VIAGGIATRENTOROUTETYPE);
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardChooseViaggiaTrentoTransportType(long chatId) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		List<KeyboardRow> keyboard = new ArrayList<>();
+		
+		keyboard.add(keyboardRowButton("TRANSIT"));
+		keyboard.add(keyboardRowButton("SHAREDBIKE"));
+		keyboard.add(keyboardRowButton("SHAREDBIKE_WITHOUT_STATION"));
+		keyboard.add(keyboardRowButton("CARWITHPARKING"));
+		keyboard.add(keyboardRowButton("SHAREDCAR"));
+		keyboard.add(keyboardRowButton("SHAREDCAR_WITHOUT_STATION"));
+		keyboard.add(keyboardRowButton("BUS"));
+		keyboard.add(keyboardRowButton("TRAIN"));
+		keyboard.add(keyboardRowButton("WALK"));
+		
+		replyKeyboardMarkup.setKeyboard(keyboard);
+	
+		Current.setMenu(chatId, Menu.VIAGGIATRENTOTRANSPORTTYPE);
 		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 

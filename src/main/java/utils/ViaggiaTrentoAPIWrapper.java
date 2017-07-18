@@ -21,14 +21,14 @@ import org.json.simple.parser.ParseException;
 public class ViaggiaTrentoAPIWrapper {
 
 	
-	public ArrayList <TravelViaggiaTrento> getViaggiaTrentoRoutes(String coordinatesFrom, String coordinatesTo) {
+	public ArrayList <TravelViaggiaTrento> getViaggiaTrentoRoutes(String coordinatesFrom, String coordinatesTo, String routeType, String transportType) {
 	
 		 String dateHour = new SimpleDateFormat("MM/dd/yyyy HH:mm:mm").format(Calendar.getInstance().getTime());  
 		 String date = dateHour.substring(0,2)+"%2F"+dateHour.substring(3,5)+"%2F"+ dateHour.substring(6,10);
 		 String hour = dateHour.substring(11,13)+"%3A"+dateHour.substring(14,16);
 		 ArrayList <TravelViaggiaTrento> alternatives = new ArrayList <TravelViaggiaTrento>();
 		 
-		 String result = callURL("https://dev.smartcommunitylab.it/smart-planner/trentino/rest/plan?from="+coordinatesFrom+"&to="+coordinatesTo+"&date="+date+"&departureTime="+hour+"&transportType=TRANSIT&routeType=fastest&numOfItn=10");
+		 String result = callURL("https://dev.smartcommunitylab.it/smart-planner/trentino/rest/plan?from="+coordinatesFrom+"&to="+coordinatesTo+"&date="+date+"&departureTime="+hour+"&transportType="+transportType+"&routeType="+routeType+"&numOfItn=10");
 		 
 		if(result.equalsIgnoreCase("erroreAPI")){
 			 return alternatives;

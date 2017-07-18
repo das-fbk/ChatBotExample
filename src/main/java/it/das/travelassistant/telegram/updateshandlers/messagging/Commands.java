@@ -27,9 +27,14 @@ public class Commands {
     public static final String PARKING = "PARKING";
     public static final String LONDON = "LONDON";
     
+    public static final String YES = "YES";
+    public static final String NO = "NO";
+    
     public static final String WALKVIAGGIATRENTO = "\ud83c\udfc3";
     public static final String TRAINVIAGGIATRENTO = "\ud83d\ude82";
     public static final String BUSVIAGGIATRENTO = "\ud83d\ude8c";
+    public static final String BIKEVIAGGIATRENTO = "\ud83d\udeb4";
+    public static final String CARVIAGGIATRENTO = "\ud83d\ude99";
     
     
     public static final String CALCOLA = "\ud83d\udd0d"+"CALCOLA";
