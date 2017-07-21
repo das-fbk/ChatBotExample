@@ -117,7 +117,7 @@ public class Texts {
     public static String  textViaggiTrentoAfterChoose(Language language, ArrayList<TravelsViaggiaTrentoAfterChoose> travels) {
 	    	String result = "";
 	    	String help = "99";
-	    	for(int i = 0;i<travels.size();i++) {
+	    	for(int i = 0; i<travels.size(); i++) {
 	    		if(travels.get(i).getBusNumber().equals("999") && travels.get(i).getHours().equals("999")) {
 	    			result += "*Walk*\n";
 	    			result+="    From: *"+travels.get(i).getFrom()+"*\n";

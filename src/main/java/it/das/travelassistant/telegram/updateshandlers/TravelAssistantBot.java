@@ -430,7 +430,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 					        
 					        int t = 0;
 					        
-							for(int i = 0;i < travelsRomeToRioAfterChoose.size();i++){
+							for(int i = 0; i < travelsRomeToRioAfterChoose.size(); i++){
 								if(travelsRomeToRioAfterChoose.get(i).getVehicle().equals(help.get(0)) &&
 										travelsRomeToRioAfterChoose.get(i).getAgency().equals(help.get(1)) &&
 										travelsRomeToRioAfterChoose.get(i).getStart().equals(help.get(2)) &&
@@ -494,55 +494,36 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				
 				case VIAGGIATRENTODESTINATION:
 					if(message.getText().substring(message.getText().length() - 1).equals("h")) {
-						//stringa che mi viene data da Martina BUS;routeId;from;to
-						//Povo Piazza Manci - Verona "Big Center" autobus 13
-						//String all = "12;13R;Povo Piazza Manci;Verona \"Big Center\"";
-						
-						//Povo Piazza Manci - Piazza Dante "Dogana" autobus 5
-						//String all = "12;05R;Povo Piazza Manci;Piazza Dante \"Dogana\"";
-						
-						//Piazza Dante "Stazione Fs" - Mattarello "Torre Franca" autobus 8
-						//String all = "12;08A;Piazza Dante \"Stazione Fs\";Mattarello \"Torre Franca\"";
-						
-						//Ravina Piazza - Piazza Dante "Pal. Regione" autobus 12
-						//String all = "12;12R;Ravina Piazza;Piazza Dante \"Pal. Regione\"";
-						
-						//Ravina Piazza - Piazza Dante "Pal. Regione" autobus 12
-						//String all = "12;05R;Borino;Piazza Dante \"Dogana\"*12;08A;Piazza Dante \"Stazione Fs\";Mattarello \"Torre Franca\"";
-						
+						//povo - trento
+						String now = "5;BV_R1_G;Trento FS;Rovereto FS";
 						//Trento - rovereto
-						String all = "999;999;sidewalk;Trento FS*5;BV_R1_G;Trento FS;Rovereto FS*999;999;Rovereto FS;Piazzale Orsi Stazione Fs*16;03A_Rov;Stazione Fs;Corso Rosmini Via Savioli*999;999;Corso Rosmini Via Savioli;Corso Antonio Rosmini";
+						//String now = "999;999;sidewalk;Trento FS";
+						//ravina -  trento
+						//String now = "12;05R;Povo Piazza Manci;Piazza Dante \"Dogana\"";
+						//ravina - trento
+						//String now = "12;05R;Borino;Piazza Dante \"Dogana\"";
+						//Trento - rovereto
+						//String now = "16;03A_Rov;Stazione Fs;Corso Rosmini Via Savioli";
 						
-						//String all = "999;999;service road;Povo Piazza Manci*12;13R;Povo Piazza Manci;Piazza Dante \"Pal. Regione\"*999;999;Piazza Dante \"Pal. Regione\";sidewalk";
 						
 						ViaggiaTrentoAPIWrapper viaggiaTrentoAPIWrapper = new ViaggiaTrentoAPIWrapper();
 						
-						StringTokenizer stk = new StringTokenizer(all, "*");
 						travelsViaggiaTrentoAfterChoose = new ArrayList<ArrayList<TravelsViaggiaTrentoAfterChoose>> ();
-				        while (stk.hasMoreTokens()) {
-				        		ArrayList <String> help = new ArrayList <String>();
-				        		String token = stk.nextToken();
-				            StringTokenizer stk1 = new StringTokenizer(token, ";");
+				        
+				       ArrayList <String> help = new ArrayList <String>();
+				        	
+				       StringTokenizer stk1 = new StringTokenizer(now, ";");
 				            
-				            while (stk1.hasMoreTokens()) {
-				                String token1 = stk1.nextToken();
-									help.add(token1);
-				            }
-				            if(!help.get(0).equals("999") && !help.get(1).equals("999")) {
-				            	travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
-				            } else {
-				            	travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
-				            }
+				       while (stk1.hasMoreTokens()) {
+				            String token1 = stk1.nextToken();
+							help.add(token1);
 				        }
+				       
+				       travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
 						sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
-						travelsViaggiaTrentoAfterChoose.remove(0);
 					}else{
-						if(travelsViaggiaTrentoAfterChoose.size()>0) {
-							sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
-							travelsViaggiaTrentoAfterChoose.remove(0);
-						}else{
-							sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
-						}
+						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+						
 					}
 				break;
 				

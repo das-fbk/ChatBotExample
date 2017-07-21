@@ -130,19 +130,16 @@ public class ViaggiaTrentoAPIWrapper {
 			 JSONParser parser = new JSONParser();
 			 String realRouteId = null;
 			try {
-				Object obj = parser.parse(new FileReader("/Users/michaeldolzani/Documents/tirocinio/das.travelassisstant/viaggiaTrento.json"));
+				Object obj = parser.parse(new FileReader("/Users/michaeldolzani/Documents/tirocinio/ChatBotExample/viaggiaTrento.json"));
 				org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
 
 				org.json.simple.JSONObject prova = (org.json.simple.JSONObject) jsonObject.get(agencyId);
 				realRouteId = (String) prova.get(routeId);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 
