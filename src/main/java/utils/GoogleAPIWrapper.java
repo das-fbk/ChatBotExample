@@ -75,8 +75,49 @@ public class GoogleAPIWrapper {
 			    latlong = latString+"%2C"+lngString;
 			
 		
-			    return latlong;		
+			    return latlong;
 		}
+	}
+	
+	public ArrayList <String>getCoordinatesParking(String address){
+		
+		ArrayList <String>latLong = new ArrayList<String>();
+			
+			String completedFrom = address.replace(", ", "+");
+			completedFrom = completedFrom.replace(" - ", "+");
+			completedFrom = completedFrom.replace(" ", "+");
+			
+			
+			String URL = "https://maps.googleapis.com/maps/api/geocode/json?address="+completedFrom+"&key=AIzaSyBnLrMivSthmUmUipPfk5sidv7f0QvvDjg";
+		    System.out.println(URL);
+			String result = callURL(URL);
+			
+			if(result.equalsIgnoreCase("erroreAPI")){
+				 return latLong;
+			}else{
+				JSONObject jsonObj = new JSONObject(result);
+				JSONArray routes =  new JSONArray();
+				routes = jsonObj.getJSONArray("results");
+				
+					if(routes.length() > 0){
+						JSONObject info = (JSONObject) routes.get(0);
+						
+						JSONObject geometry = info.getJSONObject("geometry");
+						JSONObject location = geometry.getJSONObject("location");
+						
+						Double lat = location.getDouble("lat");
+					    Double lng = location.getDouble("lng");
+					    
+					    String latString = lat.toString();
+					    String lngString = lng.toString();
+					
+					    latLong.add(latString);
+					    latLong.add(lngString);
+					}
+					
+				    
+				    return latLong;
+			}
 	}
 	
 	

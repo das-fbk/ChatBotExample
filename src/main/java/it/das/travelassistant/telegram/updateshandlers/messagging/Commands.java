@@ -23,6 +23,8 @@ public class Commands {
     public static final String ROME2RIO = "ROME2RIO";
     public static final String BLABLACAR = "BLABLACAR";
     public static final String VIAGGIATRENTO = "VIAGGIATRENTO";
+    public static final String EMTMALAGA = "EMT MALAGA";
+    public static final String FLIXBUS = "FLIXBUS";
     public static final String BIKE = "BIKE";
     public static final String PARKING = "PARKING";
     public static final String LONDON = "LONDON";

@@ -8,6 +8,8 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.FLIXBUS;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.EMTMALAGA;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.STARTCOMMAND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.ROME2RIO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.LONDON;
@@ -39,6 +41,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.t
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiTrentoAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoYesNo;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textEmtMalagaResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTrip;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textLondonResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textParking;
@@ -47,10 +50,12 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.t
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoRouteType;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textViaggiaTrentoTransportType;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textCityBike;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textParkingLeg;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textChooseRomeBla;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioArrive;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textRome2RioResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textBlaBlaCarResult;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textFlixbusResult;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textStart;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textStartFrom;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Texts.textStartDestination;
@@ -70,6 +75,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import utils.Rome2RioAPIWrapper;
+import utils.Flixbus_EmtMalagaAPIWrapper;
 import utils.LondonAPIWrapper;
 import utils.ViaggiaTrentoAPIWrapper;
 import utils.TravelsRomeToRioAfterChoose;
@@ -81,6 +87,7 @@ import utils.BlaBlaCarAPIWrapper;
 import utils.GoogleAPIWrapper;
 import utils.TripAlternativeRome2Rio;
 import utils.TripAlternativeLondon;
+import utils.TravelsFlixbus_EmtMalaga;
 import utils.ParkingAPIWrapper;
 import utils.ParkingTrentoRovereto;
 import utils.TripAlternativeBlaBlaCar;
@@ -100,9 +107,13 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 	private String transportTypeV;
 	private Rome2RioAPIWrapper rome2RioWrapper;
 	private LondonAPIWrapper londonWrapper;
+	private Flixbus_EmtMalagaAPIWrapper flixbusWrapper;
+	private Flixbus_EmtMalagaAPIWrapper emtMalagaWrapper;
 	private ArrayList<Integer> userIDs;
 	ArrayList<TripAlternativeRome2Rio> romeToRioAlternatives;
 	ArrayList<TripAlternativeLondon> londonAlternatives;
+	ArrayList<TravelsFlixbus_EmtMalaga> flixbusAlternatives;
+	ArrayList<TravelsFlixbus_EmtMalaga> emtMalagaAlternatives;
 	ArrayList<TripAlternativeBlaBlaCar> blaBlaCarAlternatives;
 	ArrayList<TravelsRomeToRioAfterChoose> travelsRomeToRioAfterChoose;
 	ArrayList<TravelsLondonAfterChoose> travelsLondonAfterChoose;
@@ -305,14 +316,17 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							ParkingAPIWrapper parking = new ParkingAPIWrapper();
 							ArrayList <ParkingTrentoRovereto> park = new ArrayList <ParkingTrentoRovereto>();
 							String help = "";
+							
 							if(getStart().toLowerCase().equals("trento")){
 								help = "COMUNE_DI_TRENTO";
 							}else if(getStart().toLowerCase().equals("rovereto")){
 								help = "COMUNE_DI_ROVERETO";
 							}
+							
 							park = parking.getParkingAlternatives(help);
 							
 							sendMessageDefault(message, textParking(Current.getLanguage(chatId), park, getStart()));
+							
 							break;
 						case LONDON:
 							londonAlternatives = new ArrayList<TripAlternativeLondon>();
@@ -325,6 +339,35 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							londonAlternatives = londonWrapper.getLondonAlternatives(from, to);
 							if (londonAlternatives.size() != 0) {
 								sendMessageDefault(message,keyboardLondonResult(chatId, londonAlternatives, "NULL"), textLondonResult(Current.getLanguage(chatId), londonAlternatives, ""));
+							}
+							break;
+						case FLIXBUS:
+							flixbusAlternatives = new ArrayList<TravelsFlixbus_EmtMalaga>();
+							
+							flixbusWrapper = new Flixbus_EmtMalagaAPIWrapper();
+							
+							from = this.getStart();
+							to = this.getDestination();
+							
+							flixbusAlternatives = flixbusWrapper.getFlixbusAlternatives(from, to);
+							
+							if (flixbusAlternatives.size() != 0) {
+								sendMessageDefault(message, textFlixbusResult(Current.getLanguage(chatId), flixbusAlternatives));
+							}
+							
+							break;
+						case EMTMALAGA:
+							emtMalagaAlternatives = new ArrayList<TravelsFlixbus_EmtMalaga>();
+							
+							emtMalagaWrapper = new Flixbus_EmtMalagaAPIWrapper();
+							
+							from = this.getStart();
+							to = this.getDestination();
+							
+							emtMalagaAlternatives = emtMalagaWrapper.getEmtMalagaAlternatives(from, to);
+							
+							if (emtMalagaAlternatives.size() != 0) {
+								sendMessageDefault(message, textEmtMalagaResult(Current.getLanguage(chatId), emtMalagaAlternatives));
 							}
 							break;
 					}
@@ -388,8 +431,8 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							//stringa con tutto il percorso che mi viene data da Martina
 							
 							//trento - torino
-							String all = "Train;Trenitalia Frecce;Trento;Verona Porta Nuova*Shuttle;Azienda Trasporti Verona Srl;Verona;Verona Catullo Airport*Plane;999;Verona;Turin*Train;5T Torino;Caselle Aeroporto;Torino Dora"; 
-							String now = "Shuttle;Azienda Trasporti Verona Srl;Verona;Verona Catullo Airport";
+							//String all = "Train;Trenitalia Frecce;Trento;Verona Porta Nuova*Shuttle;Azienda Trasporti Verona Srl;Verona;Verona Catullo Airport*Plane;999;Verona;Turin*Train;5T Torino;Caselle Aeroporto;Torino Dora"; 
+							//String now = "Shuttle;Azienda Trasporti Verona Srl;Verona;Verona Catullo Airport";
 							
 							//trento - roma
 							//String all = "Train;Trenitalia Frecce;Trento;Roma Termini"; 
@@ -408,8 +451,8 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							//String now = "Train;SEPTA;Airport Terminal A;University City";
 							
 							//trento - vienna
-							//String all = "Train;Sudtirol Alto Adige;Trento;Bozen*Bus;Helloe;Bolzano;Vienna"; 
-							//String now = "Bus;Helloe;Bolzano;Vienna";
+							String all = "Train;Sudtirol Alto Adige;Trento;Bozen*Bus;Helloe;Bolzano;Vienna"; 
+							String now = "Bus;Helloe;Bolzano;Vienna";
 							
 							rome2RioWrapper = new Rome2RioAPIWrapper();
 							
@@ -495,7 +538,7 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				case VIAGGIATRENTODESTINATION:
 					if(message.getText().substring(message.getText().length() - 1).equals("h")) {
 						//povo - trento
-						String now = "5;BV_R1_G;Trento FS;Rovereto FS";
+						String now = "CAR;999;Via Giovanni Segantini;Piazza Fiera - P4";
 						//Trento - rovereto
 						//String now = "999;999;sidewalk;Trento FS";
 						//ravina -  trento
@@ -513,17 +556,60 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				       ArrayList <String> help = new ArrayList <String>();
 				        	
 				       StringTokenizer stk1 = new StringTokenizer(now, ";");
-				            
+				       
 				       while (stk1.hasMoreTokens()) {
 				            String token1 = stk1.nextToken();
 							help.add(token1);
 				        }
 				       
-				       travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
-						sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
+				       if(help.get(0).equals("CAR") && help.get(1).equals("999")){
+				    	   GoogleAPIWrapper gooogle = new GoogleAPIWrapper();
+				    	   
+				    	   ArrayList <String> latLong = new ArrayList <String>();
+				    	   
+				    	   latLong = gooogle.getCoordinatesParking(help.get(3));
+				    	   
+				    	   Double latitudineMax = Double.parseDouble(latLong.get(0).substring(0, latLong.get(0).indexOf('.') + 3)) + 0.01;
+				    	   Double longitudineMax = Double.parseDouble(latLong.get(1).substring(0, latLong.get(1).indexOf('.') + 3)) + 0.01;
+				    	   Double latitudineMin = Double.parseDouble(latLong.get(0).substring(0, latLong.get(0).indexOf('.') + 3)) - 0.01;
+				    	   Double longitudineMin = Double.parseDouble(latLong.get(1).substring(0, latLong.get(1).indexOf('.') + 3)) - 0.01;
+				    	   
+				    	   ParkingAPIWrapper parking = new ParkingAPIWrapper();
+				    	   
+							ArrayList <ParkingTrentoRovereto> park = new ArrayList <ParkingTrentoRovereto>();
+							ArrayList <ParkingTrentoRovereto> park2 = new ArrayList <ParkingTrentoRovereto>();
+							
+							String helpp = "";
+							
+							if(getStart().toLowerCase().contains("trento")){
+								helpp = "COMUNE_DI_TRENTO";
+							}else if(getStart().toLowerCase().contains("rovereto")){
+								helpp = "COMUNE_DI_ROVERETO";
+							}
+							
+							park = parking.getParkingAlternatives(helpp);
+							
+							for(int i = 0;i < park.size();i++){
+								
+					    		latLong = gooogle.getCoordinatesParking(park.get(i).getDescription());
+					    		if(latLong.size() == 2){
+					    			if(Double.parseDouble(latLong.get(0)) < latitudineMax && Double.parseDouble(latLong.get(0)) > latitudineMin &&
+											Double.parseDouble(latLong.get(1)) < longitudineMax && Double.parseDouble(latLong.get(1)) > longitudineMin){
+											park2.add(park.get(i));
+										}
+					    		}
+								
+							}
+							
+							sendMessageDefault(message, keyboardViaggiaTrentoAfterChoose(chatId), textParking(Current.getLanguage(chatId), park2, getStart()));
+				    	   
+				       }else{
+					       travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
+					       sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
+				       }
+				       
 					}else{
-						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
-						
+						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));	
 					}
 				break;
 				

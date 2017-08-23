@@ -27,7 +27,6 @@ public class ParkingAPIWrapper {
 				
 				JSONObject leg = (JSONObject) jsonObj.get(i);
 				
-				
 				String name = (String) leg.getString("name");
 				String description = (String) leg.getString("description");
 				int total = leg.getInt("slotsTotal");

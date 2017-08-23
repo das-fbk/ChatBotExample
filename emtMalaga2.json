@@ -1,0 +1,90 @@
+{
+  "query": {
+    "origin": "%Parque%del%Sur%",
+    "destination": "%Plaza%de%la%Victoria%",
+    "date": "20170811",
+    "time": "12:05:00"
+  },
+  "results": [
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:06:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:19:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:07:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:20:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:15:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:28:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:16:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:29:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:17:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:30:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:24:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:37:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:26:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:39:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:33:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:46:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:36:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:49:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    },
+    {
+      "route": "1",
+      "headsign": "San AndrÈs",
+      "departure_time": "12:42:00",
+      "departure_stop_name": "Plaza de Nazaret (Parque del Sur)",
+      "arrival_time": "12:55:00",
+      "arrival_stop_name": "Plaza de la Victoria"
+    }
+  ]
+}

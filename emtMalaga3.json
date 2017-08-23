@@ -1,0 +1,90 @@
+{
+  "query": {
+    "origin": "%Universidad%",
+    "destination": "%Alameda%Principal%",
+    "date": "20170808",
+    "time": "09:08:13"
+  },
+  "results": [
+    {
+      "route": "23",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:10:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:42:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:12:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:34:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:12:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:39:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "23",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:14:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:40:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:14:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:37:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:22:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:44:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:23:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:50:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:24:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:47:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "23",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:31:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "10:03:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    },
+    {
+      "route": "21",
+      "headsign": "Alameda Principal",
+      "departure_time": "09:33:00",
+      "departure_stop_name": "Universidad Laboral",
+      "arrival_time": "09:55:00",
+      "arrival_stop_name": "Alameda Principal (Sur)"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "query": {
+    "origin": "%Malagueta%",
+    "destination": "%Ayuntamiento%",
+    "date": "20170802",
+    "time": "16:15:00"
+  },
+  "results": [
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "16:15:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "16:18:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "16:26:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "16:29:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "16:37:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "16:40:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "16:48:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "16:51:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "16:59:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "17:02:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "17:10:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "17:13:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "17:21:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "17:24:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "17:32:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "17:35:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "17:43:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "17:46:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    },
+    {
+      "route": "14",
+      "headsign": "Teatinos",
+      "departure_time": "17:54:00",
+      "departure_stop_name": "Pso. Mtmo. Cdad. de Melilla (Pza. Malagueta)",
+      "arrival_time": "17:57:00",
+      "arrival_stop_name": "Paseo del Parque ( Ayuntamiento)"
+    }
+  ]
+}

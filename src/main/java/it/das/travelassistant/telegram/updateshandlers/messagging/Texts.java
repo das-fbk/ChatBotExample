@@ -20,6 +20,7 @@ import utils.TravelsLondonAfterChoose;
 import utils.ParkingTrentoRovereto;
 import utils.TripAlternativeLondon;
 import utils.TravelsViaggiaTrentoAfterChoose;
+import utils.TravelsFlixbus_EmtMalaga;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -111,6 +112,26 @@ public class Texts {
     		  
     		    
     	}
+    	return result;
+    }
+    
+    public static String  textParkingLeg (Language language, ParkingTrentoRovereto park, int counter, String partenza) {
+		String result = "";
+		result+="*P* Parking in *"+ partenza+"*\n";
+		result+="       \ud83d\udd35 = parkings available\n";
+		result+="\n";
+    	if(park.getName().equals(park.getDescription())){
+    		result+="     *"+(counter+1)+".* "+park.getName()+"\n";
+   		}else{
+   			result+="     *"+(counter+1)+".* "+park.getName()+", "+park.getDescription()+"\n";
+    	}
+   		result+="            *Tot.* "+park.getTotal()+" *P*\n";
+    	if(park.getMonitored() == false){
+   			result+="            \ud83d\udeab This information is not available\n";
+    	}else{
+    		result+="            \ud83d\udd35 "+park.getAvailable()+" *P*\n";
+   		}
+    		
     	return result;
     }
     
@@ -343,6 +364,38 @@ public class Texts {
     	
     		
     		result+=getMessage("rome2rioresult", language.locale());
+    	return result;
+    }
+    
+    public static String  textFlixbusResult(Language language, ArrayList <TravelsFlixbus_EmtMalaga> travels) {
+    	String result = getMessage("rome2riodifferentway", language.locale())+"\n\n";
+    	for(int i = 0;i<travels.size();i++){
+    		result+="*"+travels.get(i).getPosition()+".*\n";
+    		result+="     *From:* "+travels.get(i).getFrom()+"\n";
+    		result+="     *To:* "+travels.get(i).getTo()+"\n";
+    		result+="     *Bus number:* "+travels.get(i).getRoute()+"\n";
+    		result+="     *Bus name displayed:* "+travels.get(i).getHeadsign()+"\n";
+    		result+="     *Departure time:* "+travels.get(i).getDeparture_time()+"\n";
+    		result+="     *From stop name:* "+travels.get(i).getDeparture_stop_name()+"\n";
+    		result+="     *To stop name:* "+travels.get(i).getArrival_stop_name()+"\n";
+    		result+="     *Arrival time:* "+travels.get(i).getArrival_time()+"\n\n";
+    	}
+    	return result;
+    }
+    
+    public static String  textEmtMalagaResult(Language language, ArrayList <TravelsFlixbus_EmtMalaga> travels) {
+    	String result = getMessage("rome2riodifferentway", language.locale())+"\n\n";
+    	for(int i = 0;i<travels.size();i++){
+    		result+="*"+travels.get(i).getPosition()+".*\n";
+    		result+="     *From:* "+travels.get(i).getFrom()+"\n";
+    		result+="     *To:* "+travels.get(i).getTo()+"\n";
+    		result+="     *Bus number:* "+travels.get(i).getRoute()+"\n";
+    		result+="     *Bus name displayed:* "+travels.get(i).getHeadsign()+"\n";
+    		result+="     *Departure time:* "+travels.get(i).getDeparture_time()+"\n";
+    		result+="     *From stop name:* "+travels.get(i).getDeparture_stop_name()+"\n";
+    		result+="     *To stop name:* "+travels.get(i).getArrival_stop_name()+"\n";
+    		result+="     *Arrival time:* "+travels.get(i).getArrival_time()+"\n\n";
+    	}
     	return result;
     }
     

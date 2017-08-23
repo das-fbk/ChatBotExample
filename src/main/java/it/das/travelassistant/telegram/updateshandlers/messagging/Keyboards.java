@@ -17,6 +17,8 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NEXT;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PARKING;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.EMTMALAGA;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.FLIXBUS;
 
 import utils.ViaggiaTrentoAPIWrapper;
 
@@ -30,6 +32,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import utils.TravelRome2Rio;
+import utils.TravelsFlixbus_EmtMalaga;
 import utils.TravelsRomeToRioAfterChoose;
 import utils.TravelViaggiaTrento;
 import utils.TripAlternativeLondon;
@@ -184,6 +187,7 @@ public class Keyboards {
 		Current.setMenu(chatId, menu);
 		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
+	
 	
 	private static ReplyKeyboardMarkup keyboardViaggiaTrentoAfterChoose(long chatId, Menu menu) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
@@ -406,6 +410,8 @@ public class Keyboards {
 			keyboard.add(keyboardRowButton(BLABLACAR));
 			keyboard.add(keyboardRowButton(VIAGGIATRENTO));
 			keyboard.add(keyboardRowButton(BIKE));
+			keyboard.add(keyboardRowButton(FLIXBUS));
+			keyboard.add(keyboardRowButton(EMTMALAGA));
 			if(partenza.equals("trento") || partenza.equals("rovereto")){
 				keyboard.add(keyboardRowButton(PARKING));
 			}
@@ -435,11 +441,11 @@ public class Keyboards {
 		mean = Pattern.compile("car ferry", Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("car_ferr"));
 		
 		if(mean.contains("Line")) {
-			mean = Pattern.compile(mean.substring(0, mean.indexOf("train")), Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Train"));
+			mean = Pattern.compile(mean.substring(0, mean.indexOf("Line")), Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("Train"));
 		}
 		
 		if(mean.contains("line")) {
-			mean = Pattern.compile(mean.substring(0, mean.indexOf("train")), Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("train"));
+			mean = Pattern.compile(mean.substring(0, mean.indexOf("line")), Pattern.LITERAL).matcher(mean).replaceAll(Matcher.quoteReplacement("train"));
 		}
 		
 		//train

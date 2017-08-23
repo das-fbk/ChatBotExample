@@ -1,0 +1,90 @@
+{
+  "query": {
+    "origin": "%Puerta%Blanca%",
+    "destination": "%El%Palo%",
+    "date": "20170808",
+    "time": "09:08:13"
+  },
+  "results": [
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:17:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:15:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:27:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:25:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:28:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:24:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:37:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:35:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:38:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:34:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:47:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:45:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:48:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:44:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:57:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:55:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "09:58:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "10:54:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "10:07:00",
+      "departure_stop_name": "Puerta Blanca (Gregorio Diego)",
+      "arrival_time": "11:03:00",
+      "arrival_stop_name": "Carretera de OlÌas (El Palo)"
+    }
+  ]
+}

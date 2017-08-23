@@ -1,0 +1,90 @@
+{
+  "query": {
+    "origin": "%Marina%",
+    "destination": "%Ayuntamiento%",
+    "date": "20170801",
+    "time": "19:30:00"
+  },
+  "results": [
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "19:30:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:32:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "1",
+      "headsign": "Parque del Sur",
+      "departure_time": "19:30:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:31:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "72",
+      "headsign": "",
+      "departure_time": "19:32:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:33:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "11",
+      "headsign": "El Palo (P.Virginia)",
+      "departure_time": "19:33:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:35:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "11",
+      "headsign": "El Palo (P.Virginia)",
+      "departure_time": "19:34:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:36:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "1",
+      "headsign": "Parque del Sur",
+      "departure_time": "19:36:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:37:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "72",
+      "headsign": "",
+      "departure_time": "19:36:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:37:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "3",
+      "headsign": "El Palo (Olias)",
+      "departure_time": "19:38:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:40:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "1",
+      "headsign": "Parque del Sur",
+      "departure_time": "19:38:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:39:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    },
+    {
+      "route": "1",
+      "headsign": "Parque del Sur",
+      "departure_time": "19:40:00",
+      "departure_stop_name": "Paseo del Parque (Plaza de la Marina)",
+      "arrival_time": "19:41:00",
+      "arrival_stop_name": "Paseo del Parque (Ayuntamiento)"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "query": {
+    "origin": "%Barcelona%",
+    "destination": "Venice%",
+    "date": "20170803",
+    "time": "00:00:00"
+  },
+  "results": [
+    {
+      "route": "FLIXBUS:N740",
+      "headsign": "Venezia (Tronchetto)",
+      "departure_time": "20:00:00",
+      "departure_stop_name": "Barcelona, Barcelona",
+      "arrival_time": "36:40:00",
+      "arrival_stop_name": "Venice, Venice Mestre (Train station)"
+    },
+    {
+      "route": "FLIXBUS:N740",
+      "headsign": "Venezia (Tronchetto)",
+      "departure_time": "20:00:00",
+      "departure_stop_name": "Barcelona, Barcelona",
+      "arrival_time": "37:00:00",
+      "arrival_stop_name": "Venice, Venice (Tronchetto)"
+    }
+  ]
+}

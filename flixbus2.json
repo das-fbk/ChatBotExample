@@ -1,0 +1,66 @@
+{
+  "query": {
+    "origin": "%Torin%",
+    "destination": "Paris%",
+    "date": "20170803",
+    "time": "00:00:00"
+  },
+  "results": [
+    {
+      "route": "FLIXBUS:729",
+      "headsign": "ParÌs (Porte Maillot)",
+      "departure_time": "09:40:00",
+      "departure_stop_name": "Turin, Torino (Vittorio Emanuele)",
+      "arrival_time": "20:00:00",
+      "arrival_stop_name": "Paris, Paris (Porte Maillot)"
+    },
+    {
+      "route": "FLIXBUS:N729",
+      "headsign": "Paris (Quai de Bercy)",
+      "departure_time": "18:10:00",
+      "departure_stop_name": "Turin, Torino (Vittorio Emanuele)",
+      "arrival_time": "28:45:00",
+      "arrival_stop_name": "Paris, Paris (Quai de Bercy)"
+    },
+    {
+      "route": "FLIXBUS:N521",
+      "headsign": "Paris (Quai de Bercy)",
+      "departure_time": "22:25:00",
+      "departure_stop_name": "Turin, Torino (Lingotto)",
+      "arrival_time": "32:50:00",
+      "arrival_stop_name": "Paris, Massy"
+    },
+    {
+      "route": "FLIXBUS:N521",
+      "headsign": "Paris (Quai de Bercy)",
+      "departure_time": "22:25:00",
+      "departure_stop_name": "Turin, Torino (Lingotto)",
+      "arrival_time": "33:25:00",
+      "arrival_stop_name": "Paris, Paris (Quai de Bercy)"
+    },
+    {
+      "route": "FLIXBUS:N729",
+      "headsign": "Parigi (Quai de Bercy)",
+      "departure_time": "23:10:00",
+      "departure_stop_name": "Turin, Torino (Vittorio Emanuele)",
+      "arrival_time": "33:15:00",
+      "arrival_stop_name": "Paris, Paris (Quai de Bercy)"
+    },
+    {
+      "route": "FLIXBUS:N521",
+      "headsign": "Paris (Quai de Bercy)",
+      "departure_time": "23:20:00",
+      "departure_stop_name": "Turin, Torino (Vittorio Emanuele)",
+      "arrival_time": "32:50:00",
+      "arrival_stop_name": "Paris, Massy"
+    },
+    {
+      "route": "FLIXBUS:N521",
+      "headsign": "Paris (Quai de Bercy)",
+      "departure_time": "23:20:00",
+      "departure_stop_name": "Turin, Torino (Vittorio Emanuele)",
+      "arrival_time": "33:25:00",
+      "arrival_stop_name": "Paris, Paris (Quai de Bercy)"
+    }
+  ]
+}
