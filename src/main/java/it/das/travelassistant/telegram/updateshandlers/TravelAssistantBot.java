@@ -308,8 +308,11 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							break;
 						case BIKE:
 							CityBikeAPIWrapper citybike = new CityBikeAPIWrapper();
+							
 							ArrayList <CityBike> city = new ArrayList <CityBike>();
+							
 							city = citybike.getCityBikeAlternatives(getStart());
+							
 							sendMessageDefault(message, textCityBike(Current.getLanguage(chatId), city, getStart()));
 							break;
 						case PARKING:
@@ -537,8 +540,11 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				
 				case VIAGGIATRENTODESTINATION:
 					if(message.getText().substring(message.getText().length() - 1).equals("h")) {
-						//povo - trento
-						String now = "CAR;999;Via Giovanni Segantini;Piazza Fiera - P4";
+						
+						//String now = "CAR;999;Via Giovanni Segantini;Piazza Fiera - P4";
+						
+						String now = "BICYCLE;999;Via Guardini fr. civ. 75;Via Fogazzaro / Via Gocciadoro";
+						
 						//Trento - rovereto
 						//String now = "999;999;sidewalk;Trento FS";
 						//ravina -  trento
@@ -553,9 +559,9 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 						
 						travelsViaggiaTrentoAfterChoose = new ArrayList<ArrayList<TravelsViaggiaTrentoAfterChoose>> ();
 				        
-				       ArrayList <String> help = new ArrayList <String>();
+						ArrayList <String> help = new ArrayList <String>();
 				        	
-				       StringTokenizer stk1 = new StringTokenizer(now, ";");
+						StringTokenizer stk1 = new StringTokenizer(now, ";");
 				       
 				       while (stk1.hasMoreTokens()) {
 				            String token1 = stk1.nextToken();
@@ -603,8 +609,48 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							
 							sendMessageDefault(message, keyboardViaggiaTrentoAfterChoose(chatId), textParking(Current.getLanguage(chatId), park2, getStart()));
 				    	   
+				       }else if(help.get(0).equals("BICYCLE") && help.get(1).equals("999")){
+				    	   GoogleAPIWrapper gooogle = new GoogleAPIWrapper();
+				    	   
+				    	   ArrayList <String> latLong = new ArrayList <String>();
+				    	   
+				    	   latLong = gooogle.getCoordinatesParking(help.get(3));
+				    	   
+				    	   Double latitudineMax = Double.parseDouble(latLong.get(0).substring(0, latLong.get(0).indexOf('.') + 3)) + 0.01;
+				    	   Double longitudineMax = Double.parseDouble(latLong.get(1).substring(0, latLong.get(1).indexOf('.') + 3)) + 0.01;
+				    	   Double latitudineMin = Double.parseDouble(latLong.get(0).substring(0, latLong.get(0).indexOf('.') + 3)) - 0.01;
+				    	   Double longitudineMin = Double.parseDouble(latLong.get(1).substring(0, latLong.get(1).indexOf('.') + 3)) - 0.01;
+				    	   
+				    	   System.out.println(latitudineMax);
+				    	   System.out.println(longitudineMax);
+				    	   System.out.println(latitudineMin);
+				    	   System.out.println(longitudineMin);
+				    	   
+				    	   CityBikeAPIWrapper citybike = new CityBikeAPIWrapper();
+							
+							ArrayList <CityBike> city = new ArrayList <CityBike>();
+							ArrayList <CityBike> city2 = new ArrayList <CityBike>();
+							
+							city = citybike.getCityBikeAlternatives(getStart());
+							
+							
+							for(int i = 0;i < city.size();i++){
+								
+					    		latLong = gooogle.getCoordinatesParking(city.get(i).getStreet());
+					    		
+					    		if(latLong.size() == 2){
+					    			if(Double.parseDouble(latLong.get(0)) < latitudineMax && Double.parseDouble(latLong.get(0)) > latitudineMin &&
+											Double.parseDouble(latLong.get(1)) < longitudineMax && Double.parseDouble(latLong.get(1)) > longitudineMin){
+					    					city2.add(city.get(i));
+										}
+					    		}
+								
+							}
+							
+							sendMessageDefault(message, keyboardViaggiaTrentoAfterChoose(chatId), textCityBike(Current.getLanguage(chatId), city, getStart()));
+							
 				       }else{
-					       travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
+				    	   travelsViaggiaTrentoAfterChoose.add(viaggiaTrentoAPIWrapper.getViaggiaTrentoAfterChoose(help.get(0), help.get(1), help.get(2), help.get(3)));
 					       sendMessageDefault(message,keyboardViaggiaTrentoAfterChoose(chatId), textViaggiTrentoAfterChoose(Current.getLanguage(chatId), travelsViaggiaTrentoAfterChoose.get(0)));
 				       }
 				       

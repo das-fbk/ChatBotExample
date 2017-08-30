@@ -5,6 +5,7 @@ public class CityBike {
 	int free;
 	String street;
 	String name;
+	
 	public CityBike(int empty, int free, String street, String name) {
 		super();
 		this.empty = empty;
