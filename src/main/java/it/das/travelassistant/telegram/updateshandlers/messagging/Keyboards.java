@@ -8,7 +8,10 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.PRICE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.CHANGES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.YES;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.YESEMAIL;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NOEMAIL;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
@@ -367,6 +370,27 @@ public class Keyboards {
 
 	
 		Current.setMenu(chatId, Menu.CALCOLAROME2RIO);
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardChooseSendEmail(long chatId) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+		List<KeyboardRow> keyboard = new ArrayList<>();
+
+		keyboard.add(keyboardRowButton(YESEMAIL));
+		keyboard.add(keyboardRowButton(NOEMAIL));
+
+		replyKeyboardMarkup.setKeyboard(keyboard);
+
+	
+		Current.setMenu(chatId, Menu.EMAILCHOOSE);
+		return replyKeyboardMarkup.setOneTimeKeyboad(true);
+	}
+	
+	public static ReplyKeyboardMarkup keyboardSendEmail(long chatId) {
+		ReplyKeyboardMarkup replyKeyboardMarkup = keyboard();
+
+		Current.setMenu(chatId, Menu.EMAILCHOOSE);
 		return replyKeyboardMarkup.setOneTimeKeyboad(true);
 	}
 	

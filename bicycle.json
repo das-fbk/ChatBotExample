@@ -1,0 +1,66 @@
+{
+  "query": {
+    "origin": "%Bordeaux%",
+    "destination": "Toulouse%",
+    "date": "20170803",
+    "time": "00:00:00"
+  },
+  "results": [
+    {
+      "route": "FLIXBUS:721",
+      "headsign": "Barcelona",
+      "departure_time": "06:00:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "09:05:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    },
+    {
+      "route": "FLIXBUS:718",
+      "headsign": "Marseille St. Charles",
+      "departure_time": "08:30:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "11:35:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    },
+    {
+      "route": "FLIXBUS:721",
+      "headsign": "Barcelona",
+      "departure_time": "10:30:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "13:35:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    },
+    {
+      "route": "FLIXBUS:701",
+      "headsign": "Toulouse",
+      "departure_time": "16:15:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "19:20:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    },
+    {
+      "route": "FLIXBUS:N721",
+      "headsign": "Barcelona",
+      "departure_time": "18:40:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "21:45:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    },
+    {
+      "route": "FLIXBUS:N718",
+      "headsign": "Nice",
+      "departure_time": "19:20:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "22:20:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    },
+    {
+      "route": "FLIXBUS:N701",
+      "headsign": "Toulouse",
+      "departure_time": "26:00:00",
+      "departure_stop_name": "Bordeaux, BDX St-Jean",
+      "arrival_time": "29:00:00",
+      "arrival_stop_name": "Toulouse, Toulouse"
+    }
+  ]
+}

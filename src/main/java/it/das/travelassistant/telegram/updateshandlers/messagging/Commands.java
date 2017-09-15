@@ -30,7 +30,10 @@ public class Commands {
     public static final String LONDON = "LONDON";
     
     public static final String YES = "YES";
+    public static final String SEND = "SEND";
     public static final String NO = "NO";
+    public static final String YESEMAIL = "YES";
+    public static final String NOEMAIL = "NO";
     
     public static final String WALKVIAGGIATRENTO = "\ud83c\udfc3";
     public static final String TRAINVIAGGIATRENTO = "\ud83d\ude82";

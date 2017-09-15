@@ -7,6 +7,7 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DATEHOUR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.DISTANCE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.TIME;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEND;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BIKE;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.FLIXBUS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.EMTMALAGA;
@@ -17,16 +18,20 @@ import static it.das.travelassistant.telegram.updateshandlers.messagging.Command
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.SEATS;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.YES;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NO;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.YESEMAIL;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.NOEMAIL;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.BLABLACAR;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Commands.VIAGGIATRENTO;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelRomeToRio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.getDifferentWayTravelBlaBlaCar;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardViaggiaTrentoAfterChoose;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardLondonAfterChoose;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseSendEmail;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseViaggiaTrentoRouteType;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseViaggiaTrentoTransportType;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseStartViaggiaTrento;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseAlternatives;
+import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardSendEmail;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardCalcolaRome2Rio;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardChooseViaggiaTrentoYesNo;
 import static it.das.travelassistant.telegram.updateshandlers.messagging.Keyboards.keyboardRome2RioAfterChoose;
@@ -64,8 +69,17 @@ import it.das.travelassistant.telegram.updateshandlers.messagging.Menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
+
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -450,12 +464,12 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 							//String now = "Train;Trenitalia Frecce;Trento;Verona Porta Nuova";
 							
 							//londra - newyork
-							//String all = "Train;Heathrow Express;London Paddington;Heathrow Terminals 1-3*Plane;999;London Heathrow;Philadelphia*Train;SEPTA;Airport Terminal A;University City*Walk;999;University City;Philadelphia 30th Street Station Amtrak*Train;Amtrak Acela Express;Philadelphia 30th Street Station Amtrak;New York Penn Station*Train;Long Island Rail Road;Penn Station;Flushing Main Street*Walk;999;Flushing Main Street;NewYork–Presbyterian/Queens"; 
-							//String now = "Train;SEPTA;Airport Terminal A;University City";
+							String all = "Train;Heathrow Express;London Paddington;Heathrow Terminals 1-3*Plane;999;London Heathrow;Philadelphia*Train;SEPTA;Airport Terminal A;University City*Walk;999;University City;Philadelphia 30th Street Station Amtrak*Train;Amtrak Acela Express;Philadelphia 30th Street Station Amtrak;New York Penn Station*Train;Long Island Rail Road;Penn Station;Flushing Main Street*Walk;999;Flushing Main Street;NewYork–Presbyterian/Queens"; 
+							String now = "Train;SEPTA;Airport Terminal A;University City";
 							
 							//trento - vienna
-							String all = "Train;Sudtirol Alto Adige;Trento;Bozen*Bus;Helloe;Bolzano;Vienna"; 
-							String now = "Bus;Helloe;Bolzano;Vienna";
+							//String all = "Train;Sudtirol Alto Adige;Trento;Bozen*Bus;Helloe;Bolzano;Vienna"; 
+							//String now = "Bus;Helloe;Bolzano;Vienna";
 							
 							rome2RioWrapper = new Rome2RioAPIWrapper();
 							
@@ -550,8 +564,8 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 						//ravina -  trento
 						//String now = "12;05R;Povo Piazza Manci;Piazza Dante \"Dogana\"";
 						//ravina - trento
-						//String now = "12;05R;Borino;Piazza Dante \"Dogana\"";
-						//Trento - rovereto
+						//
+						//Trento - roveretoString now = "12;05R;Borino;Piazza Dante \"Dogana\"";
 						//String now = "16;03A_Rov;Stazione Fs;Corso Rosmini Via Savioli";
 						
 						
@@ -655,12 +669,12 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 				       }
 				       
 					}else{
-						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));	
+						sendMessageDefault(message, keyboardChooseSendEmail(chatId), "Do you wanna get a reminder by email?");	
 					}
 				break;
 				
 				case ROME2RIOAFTERCHOOSE:
-						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+						sendMessageDefault(message, keyboardChooseSendEmail(chatId), "Do you wanna get a reminder by email?");
 				break;
 				
 				case LONDONAFTERCHOOSE:
@@ -668,8 +682,54 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 						sendMessageDefault(message,keyboardLondonAfterChoose(chatId), textLondonAfterChoose(Current.getLanguage(chatId), travelsLondonAfterChoose.get(0)));
 						travelsLondonAfterChoose.remove(0);
 					}else{
-						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+						sendMessageDefault(message, keyboardChooseSendEmail(chatId), "Do you wanna get a reminder by email?");
 					}
+				break;
+				
+				case EMAILCHOOSE:
+					switch(message.getText()) {
+					case YESEMAIL:
+						sendMessageDefault(message, keyboardSendEmail(chatId), "Please insert your email address");
+						break;
+					case NOEMAIL:
+						sendMessageDefault(message, textRome2RioArrive(Current.getLanguage(chatId)));
+						break;
+					default:
+						//bisogna salvare tutto il viaggio per poi mandarlo per il momento io semplicemnte uso quella di Rome2Rio
+						
+						String emailMessage = "";
+						
+				        for(int i = 0; i < travelsRomeToRioAfterChoose.size(); i++){
+				        	
+				        	emailMessage += travelsRomeToRioAfterChoose.get(i).getPosition()+" LEG\n"+
+				        	    	"     From "+travelsRomeToRioAfterChoose.get(i).getStart()+"\n"+
+				        	    	"     To "+travelsRomeToRioAfterChoose.get(i).getArrive()+"\n";
+				        	    	String durationString = "";
+				        	    	int rest = travelsRomeToRioAfterChoose.get(i).getDuration().intValue() % 60;
+				        			int hour = travelsRomeToRioAfterChoose.get(i).getDuration().intValue() / 60;
+				        			if(rest<10) {
+				        				durationString = hour+".0"+rest+" h";
+				        			}else {
+				        				durationString = hour+"."+rest+" h";
+				        			}
+				        			emailMessage+="     \u23F3 "+durationString+"\n"+
+				        			"     \u21e5 "+travelsRomeToRioAfterChoose.get(i).getDistance()+" Km"+"\n";
+				        			if(travelsRomeToRioAfterChoose.get(i).getPrice() != -1) {
+				        				emailMessage +="     \uD83D\uDCB0 "+travelsRomeToRioAfterChoose.get(i).getPrice()+" \u20ac"+"\n";
+				        			}
+				        			emailMessage +="     "+travelsRomeToRioAfterChoose.get(i).getVehicle();
+				        			if(!travelsRomeToRioAfterChoose.get(i).getAgency().equals("999")) {
+				        				emailMessage+=" - "+travelsRomeToRioAfterChoose.get(i).getAgency();
+				        			}
+				        			emailMessage +="\n\n";		
+				        }
+				        emailMessage +="\nThis is an automatically generated email, please don't reply\n\n";
+						sendMessageDefault(message, "sending...");
+						
+						sendEmail(message.getText(), emailMessage, message);
+						
+						break;
+				}
 				break;
 	
 					
@@ -704,6 +764,58 @@ public class TravelAssistantBot extends TelegramLongPollingBot {
 	private void sendMessageDefault(Message message, String text)
 			throws TelegramApiException {
 		sendMessageDefault(message, null, text);
+	}
+	
+	private void sendEmail(String email, String emailMessage, Message message){
+		
+		try{
+		 	final String username = "AtlasBotAtlas@gmail.com";
+	        final String password = "atlasbot";
+	        // Get a Properties object to set the mailing configuration
+	        // parameters
+	        Properties props = System.getProperties();
+	        props.setProperty("mail.smtp.host", "smtp.gmail.com");
+	        props.setProperty("mail.smtp.port", "465");
+	        props.put("mail.smtp.auth", "true");
+	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put( "mail.debug", "true" );
+	        //We create the session object with the authentication information
+	        Session session = Session.getDefaultInstance(props, new Authenticator(){
+	            @Override
+	            protected PasswordAuthentication
+	            getPasswordAuthentication() {
+	                return new PasswordAuthentication(username, password);
+	            }
+	        });
+	   
+	        //Create a new message
+	        MimeMessage msg = new MimeMessage(session);
+	
+	        //Set the FROM and TO fields –
+	        msg.setFrom(new InternetAddress(username + ""));
+	        
+	        //sostituire la mia email con "email"
+	        msg.setRecipients(MimeMessage.RecipientType.TO,
+	        InternetAddress.parse(email,false));
+	        msg.setSubject("Atlas Reminder");
+	        
+	        msg.setText("REMINDER\n"+new Date()+ "\n\n"+emailMessage);
+	        msg.setSentDate(new Date());
+	
+	        System.out.println("\nTrying to send email...\n");
+	
+	        //We create the transport object to actually send the e-mail
+	        Transport transport = session.getTransport("smtps");
+	        transport.connect ("smtp.gmail.com", 465, username, password);
+	        transport.sendMessage(msg, msg.getAllRecipients());
+	        transport.close();
+	        System.out.println("\nEmail sent!\n");
+	        sendMessageDefault(message, "The email has been sent\n\uD83C\uDFC1");
+	    
+		}catch(Exception e){
+	        e.printStackTrace();
+	    }
+		
 	}
 	
 

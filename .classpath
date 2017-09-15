@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="target/it.smartcommunitylab.viaggia.telegram.botapi-2.1-sources.jar"/>
 	<classpathentry kind="lib" path="target/it.smartcommunitylab.viaggia.telegram.botapi-2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/michaeldolzani/Downloads/mail-1.4.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
